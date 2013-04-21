@@ -1,8 +1,9 @@
 package com.expressmvc.view;
 
-import java.io.Writer;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public interface View {
-    public void render(Writer writer, Map<String, Object> model);
+    public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response);
 }

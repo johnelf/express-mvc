@@ -1,20 +1,48 @@
 package com.expressmvc.view;
 
-import javax.security.auth.login.Configuration;
-import java.io.Writer;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.context.Context;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
-public class VelocityView implements View{
-    private final String SUFFIX = ".jsp";
-    private Configuration config;
-    private String configName;
+public class VelocityView implements View {
+    private Template template;
+    private String url;
 
-    public VelocityView(Configuration config, String configName) {
-        this.config = config;
-        this.configName = configName;
+    public VelocityView() {
     }
 
     @Override
-    public void render(Writer writer, Map<String, Object> model) {
+    public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) {
+        response.setHeader("Pragma", "private");
+        response.setHeader("Cache-Control", "private, must-revalidate");
+
+        Context context = new VelocityContext(model);
+
+        try {
+            getTemplate().merge(context, response.getWriter());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Template getTemplate() throws Exception {
+        if (template != null) return template;
+        else {
+            return Velocity.getTemplate(url, "UTF-8");
+        }
+    }
+
 }
