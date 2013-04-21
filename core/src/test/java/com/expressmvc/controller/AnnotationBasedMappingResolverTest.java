@@ -23,11 +23,11 @@ public class AnnotationBasedMappingResolverTest {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(servletContext.getContextPath()).thenReturn("/demo");
         resolver = new AnnotationBasedMappingResolver();
+        when(servletConfig.getInitParameter(anyString())).thenReturn("com.expressmvc");
     }
 
     @Test
     public void should_able_to_resolve_the_controller_mapping_based_on_annotation() {
-        when(servletConfig.getInitParameter(anyString())).thenReturn("com.expressmvc");
         resolver.init(servletConfig);
 
         Class controllerForArticleClass = resolver.getControllerFor("/demo/article");
