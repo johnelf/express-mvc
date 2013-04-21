@@ -1,9 +1,13 @@
 package com.expressmvc.servlet;
 
-import com.expressmvc.controller.AnnotationBasedMappingResolver;
+import com.expressioc.Container;
+import com.expressioc.ExpressContainer;
+import com.expressmvc.controller.BaseController;
+import com.expressmvc.controller.ErrorHandlerController;
 import com.expressmvc.controller.MappingResolver;
 import com.expressmvc.view.VelocityConfig;
 import com.expressmvc.view.VelocityView;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DispatchServlet extends HttpServlet {
-    private MappingResolver mappingResolver = new AnnotationBasedMappingResolver();
+    private Container servletContainer = new ExpressContainer();
+
+    private MappingResolver mappingResolver;
+    private ErrorHandlerController defaultErrorHandleController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -24,6 +31,10 @@ public class DispatchServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
+        String requestURI = req.getRequestURI();
+        BaseController controller = getControllerFor(requestURI);
+        controller.service(req, resp);
+
         VelocityView velocityView = new VelocityView();
         velocityView.setUrl("hello.vm");
         Map<String, Object> model = new HashMap<String, Object>();
@@ -32,4 +43,25 @@ public class DispatchServlet extends HttpServlet {
         velocityView.render(model, req, resp);
     }
 
+    private BaseController getControllerFor(String requestURI) {
+        BaseController controller = null;
+        Class<? extends BaseController> controllerClazz = mappingResolver.getControllerFor(requestURI);
+        if (controllerClazz != null) {
+            controller = servletContainer.getComponent(controllerClazz);
+        }
+
+        if (controller == null) {
+            return defaultErrorHandleController;
+        }
+
+        return controller;
+    }
+
+    public void setDefaultErrorHandleController(ErrorHandlerController defaultErrorHandleController) {
+        this.defaultErrorHandleController = defaultErrorHandleController;
+    }
+
+    public void setMappingResolver(MappingResolver mappingResolver) {
+        this.mappingResolver = mappingResolver;
+    }
 }

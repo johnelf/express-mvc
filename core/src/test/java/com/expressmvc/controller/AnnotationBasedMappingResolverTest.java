@@ -1,5 +1,6 @@
 package com.expressmvc.controller;
 
+import com.expressmvc.controller.impl.AnnotationBasedMappingResolver;
 import com.expressmvc.test.ArticleController;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,7 @@
 package com.dummy;
 
+import com.expressioc.Container;
+import com.expressioc.ExpressContainer;
 import com.expressmvc.servlet.DispatchServlet;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
@@ -14,17 +16,16 @@ public class Demo {
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = HttpServer.createSimpleServer("/", HOST, PORT);
         WebappContext ctx = new WebappContext("demo", "/demo");
-        addServlet(ctx, "", "/");
+
+        Container container = new ExpressContainer("com.expressmvc");
+        final ServletRegistration reg = ctx.addServlet("", container.getComponent(DispatchServlet.class));
+        reg.setInitParameter("package-to-scan", "com.dummy");
+        reg.addMapping("/");
+
         ctx.deploy(httpServer);
         httpServer.start();
         System.out.println("Press any key to stop the server...");
         System.in.read();
     }
 
-    private static ServletRegistration addServlet(final WebappContext ctx, final String name, final String alias) {
-        final ServletRegistration reg = ctx.addServlet(name, new DispatchServlet());
-        reg.setInitParameter("package-to-scan", "com.dummy");
-        reg.addMapping(alias);
-        return reg;
-    }
 }

@@ -4,5 +4,5 @@ import javax.servlet.ServletConfig;
 
 public interface MappingResolver {
     void init(ServletConfig config);
-    Class getControllerFor(String url);
+    Class<? extends BaseController> getControllerFor(String url);
 }

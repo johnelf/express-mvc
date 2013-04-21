@@ -1,9 +1,10 @@
 package com.expressmvc.controller;
 
-import com.expressmvc.model.Model;
-import com.expressmvc.view.View;
+import com.expressmvc.ModelAndView;
 
-public class BaseController {
-    private Model model;
-    private View view;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public interface BaseController {
+    ModelAndView service(HttpServletRequest req, HttpServletResponse resp);
 }
