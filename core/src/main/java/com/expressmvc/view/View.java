@@ -1,6 +1,8 @@
 package com.expressmvc.view;
 
-public interface View {
-    public void render();
+import java.io.Writer;
+import java.util.Map;
 
+public interface View {
+    public void render(Writer writer, Map<String, Object> model);
 }
