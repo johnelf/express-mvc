@@ -16,10 +16,10 @@ public class AnnotationBasedMappingResolverTest {
     public void should_able_to_resolve_the_controller_mapping_based_on_annotation() {
         AnnotationBasedMappingResolver resolver = new AnnotationBasedMappingResolver();
         ServletConfig servletConfig = mock(ServletConfig.class);
-        when(servletConfig.getInitParameter(anyString())).thenReturn("com.expressmvc.test");
+        when(servletConfig.getInitParameter(anyString())).thenReturn("com.expressmvc");
         resolver.init(servletConfig);
 
-        BaseController controllerForArticle = resolver.getControllerFor("/article");
-        assertThat(controllerForArticle instanceof ArticleController, is(true));
+        Class controllerForArticleClass = resolver.getControllerFor("/article");
+        assertThat(controllerForArticleClass == ArticleController.class, is(true));
     }
 }

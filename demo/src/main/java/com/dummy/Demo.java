@@ -24,7 +24,7 @@ public class Demo {
 
     private static ServletRegistration addServlet(final WebappContext ctx, final String name, final String alias) {
         final ServletRegistration reg = ctx.addServlet(name, new DispatchServlet());
-        reg.setInitParameter(AnnotationBasedMappingResolver.CONTROLLER_SCAN_PATH, "com.dummy");
+        reg.setInitParameter(AnnotationBasedMappingResolver.PACKAGE_TO_SCAN, "com.dummy");
         reg.addMapping(alias);
         return reg;
     }
