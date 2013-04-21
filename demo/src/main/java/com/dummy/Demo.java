@@ -1,6 +1,5 @@
 package com.dummy;
 
-import com.expressmvc.controller.AnnotationBasedMappingResolver;
 import com.expressmvc.servlet.DispatchServlet;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
@@ -24,7 +23,7 @@ public class Demo {
 
     private static ServletRegistration addServlet(final WebappContext ctx, final String name, final String alias) {
         final ServletRegistration reg = ctx.addServlet(name, new DispatchServlet());
-        reg.setInitParameter(AnnotationBasedMappingResolver.PACKAGE_TO_SCAN, "com.dummy");
+        reg.setInitParameter("package-to-scan", "com.dummy");
         reg.addMapping(alias);
         return reg;
     }

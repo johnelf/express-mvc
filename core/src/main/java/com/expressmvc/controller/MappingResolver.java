@@ -1,5 +1,8 @@
 package com.expressmvc.controller;
 
-public interface MappingResolver {
+import javax.servlet.ServletConfig;
 
+public interface MappingResolver {
+    void init(ServletConfig config);
+    Class getControllerFor(String url);
 }

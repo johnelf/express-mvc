@@ -1,2 +1,5 @@
 project (':core') {
+    dependencies {
+        compile fileTree(dir: 'libs', include: 'express-ioc.jar')
+    }
 }
