@@ -11,10 +11,12 @@ import java.util.Map;
 public class AnnotationBasedMappingResolver implements MappingResolver {
     public static final String PACKAGE_TO_SCAN = "package-to-scan";
     private Map<String, Class> urlHandlerMapping = new HashMap<String, Class>();
+    private String contextPath;
 
     @Override
     public void init(ServletConfig config) {
         String scanPath = config.getInitParameter(PACKAGE_TO_SCAN);
+        contextPath = config.getServletContext().getContextPath();
         resolveControllerMapping(scanPath);
     }
 
@@ -30,10 +32,14 @@ public class AnnotationBasedMappingResolver implements MappingResolver {
                 Class<?> clazz = classInfo.load();
                 if (clazz.isAnnotationPresent(Path.class)) {
                     String urlToHandle = clazz.getAnnotation(Path.class).value();
-                    urlHandlerMapping.put(urlToHandle, clazz);
+                    addUrlHandlerMapping(clazz, urlToHandle);
                 }
             }
         } catch (IOException e) {
         }
+    }
+
+    private void addUrlHandlerMapping(Class<?> clazz, String urlToHandle) {
+        urlHandlerMapping.put(contextPath + urlToHandle, clazz);
     }
 }

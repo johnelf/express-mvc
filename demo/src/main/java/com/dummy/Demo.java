@@ -13,7 +13,7 @@ public class Demo {
 
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = HttpServer.createSimpleServer("/", HOST, PORT);
-        WebappContext ctx = new WebappContext("Demo", "/");
+        WebappContext ctx = new WebappContext("demo", "/demo");
         addServlet(ctx, "", "/");
         ctx.deploy(httpServer);
         httpServer.start();
