@@ -1,5 +1,6 @@
 package com.dummy;
 
+import com.expressmvc.controller.AnnotationBasedMappingResolver;
 import com.expressmvc.servlet.DispatchServlet;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
@@ -17,13 +18,13 @@ public class Demo {
         addServlet(ctx, "", "/");
         ctx.deploy(httpServer);
         httpServer.start();
-
         System.out.println("Press any key to stop the server...");
         System.in.read();
     }
 
     private static ServletRegistration addServlet(final WebappContext ctx, final String name, final String alias) {
         final ServletRegistration reg = ctx.addServlet(name, new DispatchServlet());
+        reg.setInitParameter(AnnotationBasedMappingResolver.CONTROLLER_SCAN_PATH, "com.dummy");
         reg.addMapping(alias);
         return reg;
     }
