@@ -41,6 +41,8 @@ public class DispatchServlet extends HttpServlet {
 //        velocityView.setUrl("hello.vm");
 //        Map<String, Object> model = newHashMap();
 //        User siteUser = new BIConversion.User("john");
+//        Map<String, Object> model = new HashMap<String, Object>();
+//        Article siteUser = new BIConversion.Article("john");
 //        model.put("user", siteUser);
 //        velocityView.render(model, req, resp);
     }

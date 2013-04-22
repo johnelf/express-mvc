@@ -2,16 +2,17 @@ package com.expressmvc.view;
 
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.VelocityException;
 
 import java.util.Properties;
 
 public class VelocityConfig {
     public static final String PRE_FIX = "/WEB-INF/templates";
 
-    public VelocityEngine ve;
+    public VelocityEngine velocityEngine;
 
-    public VelocityConfig(VelocityEngine ve) {
-        this.ve = ve;
+    public VelocityConfig(VelocityEngine velocityEngine) {
+        this.velocityEngine = velocityEngine;
     }
 
     public static void init(String contextPath) {
@@ -24,7 +25,7 @@ public class VelocityConfig {
         try {
             Velocity.init(properties);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new VelocityException(e);
         }
     }
 }

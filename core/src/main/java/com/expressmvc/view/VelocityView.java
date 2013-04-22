@@ -1,5 +1,6 @@
 package com.expressmvc.view;
 
+import com.expressmvc.exception.MergeTemplateException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -7,11 +8,9 @@ import org.apache.velocity.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Map;
 
 public class VelocityView implements View {
-    private Template template;
     private String url;
 
     public VelocityView() {
@@ -26,10 +25,8 @@ public class VelocityView implements View {
 
         try {
             getTemplate().merge(context, response.getWriter());
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new MergeTemplateException();
         }
 
     }
@@ -39,10 +36,7 @@ public class VelocityView implements View {
     }
 
     public Template getTemplate() throws Exception {
-        if (template != null) return template;
-        else {
-            return Velocity.getTemplate(url, "UTF-8");
-        }
+        return Velocity.getTemplate(url, "UTF-8");
     }
 
 }
