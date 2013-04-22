@@ -9,10 +9,8 @@ public abstract class AppFormController<T> extends BaseController {
 
     @Override
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
-
         T requestModel = bindRequestParametersToModel(req);
-        Envelope envelope = handleFormSubmit(new Envelope(), requestModel);
-
+        Envelope envelope = handleFormSubmit(new Envelope(req, resp), requestModel);
         return createModelAndViewBasedOn(envelope);
     }
 
