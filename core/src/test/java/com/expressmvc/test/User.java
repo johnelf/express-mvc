@@ -1,4 +1,4 @@
-package com.expressmvc.servlet;
+package com.expressmvc.test;
 
 public class User {
     private String name;

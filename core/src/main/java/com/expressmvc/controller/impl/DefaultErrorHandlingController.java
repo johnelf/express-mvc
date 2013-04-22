@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class DefaultErrorHandlingController implements ErrorHandlerController {
+public class DefaultErrorHandlingController extends ErrorHandlerController {
     @Override
     public ModelAndView service(HttpServletRequest req, HttpServletResponse resp) {
         try {

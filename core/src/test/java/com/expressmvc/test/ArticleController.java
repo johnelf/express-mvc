@@ -8,16 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Path("/article")
-public class ArticleController implements BaseController {
+public class ArticleController extends BaseController {
     private final MailService mailService;
 
     public ArticleController(MailService mailService) {
         this.mailService = mailService;
     }
 
+    //@Post
     @Override
-    public ModelAndView service(HttpServletRequest req, HttpServletResponse resp) {
+    public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
         this.mailService.sendNotificationMailToReader();
-        return null;
+        ModelAndView modelAndView = new ModelAndView();
+        //TOOD set model
+        return modelAndView;
     }
 }
