@@ -1,10 +1,12 @@
 package com.expressmvc.controller;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import static com.google.common.collect.Maps.newHashMap;
+
 public class Envelope {
-    private Map<String, Object> contentsMap = new HashMap<String, Object>();
+    private Map<String, Object> contentsMap = newHashMap();
 
     public Envelope(Object... initialContents) {
         add(initialContents);
@@ -20,5 +22,9 @@ public class Envelope {
                 contentsMap.put(contentObject.getClass().getName(), contentObject);
             }
         }
+    }
+
+    public Iterator getContentsIterator() {
+        return contentsMap.values().iterator();
     }
 }

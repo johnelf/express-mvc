@@ -1,9 +1,11 @@
 package com.expressmvc.controller;
 
 import com.expressmvc.ModelAndView;
+import com.expressmvc.annotation.ViewIngredient;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 
 public abstract class AppFormController<T> extends BaseController {
 
@@ -15,7 +17,25 @@ public abstract class AppFormController<T> extends BaseController {
     }
 
     private ModelAndView createModelAndViewBasedOn(Envelope envelope) {
-        return null;
+        ModelAndView mv = new ModelAndView();
+        return putViewIngredientsIntoMV(envelope, mv);
+    }
+
+    private ModelAndView putViewIngredientsIntoMV(Envelope envelope, ModelAndView mv) {
+        Iterator contentsIterator = envelope.getContentsIterator();
+
+        while (contentsIterator.hasNext()) {
+            Object o = contentsIterator.next();
+            Class<?> clazz = o.getClass();
+
+            boolean isViewIngredients = clazz.isAnnotationPresent(ViewIngredient.class);
+            if (isViewIngredients) {
+                String ingredientName = clazz.getAnnotation(ViewIngredient.class).value();
+                mv.addViewIngredient(ingredientName, o);
+            }
+        }
+
+        return mv;
     }
 
     private T bindRequestParametersToModel(HttpServletRequest req) {

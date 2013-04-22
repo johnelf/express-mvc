@@ -7,12 +7,13 @@ import com.google.common.reflect.ClassPath;
 
 import javax.servlet.ServletConfig;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.common.collect.Maps.newHashMap;
 
 public class AnnotationBasedMappingResolver implements MappingResolver {
     public static final String PACKAGE_TO_SCAN = "package-to-scan";
-    private Map<String, Class<? extends BaseController>> urlHandlerMapping = new HashMap<String, Class<? extends BaseController>>();
+    private Map<String, Class<? extends BaseController>> urlHandlerMapping = newHashMap();
     private String contextPath;
 
     @Override
