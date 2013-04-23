@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class DispatchServlet extends HttpServlet {
-    private Container servletContainer = new ExpressContainer();
+    private Container servletContainer = new ExpressContainer("com.expressmvc");
     private MappingResolver mappingResolver;
 
     @Override
@@ -37,7 +37,7 @@ public class DispatchServlet extends HttpServlet {
 
         controller.service(req, resp);
 
-//        VelocityView velocityView = new VelocityView();
+//        VelocityViewRender velocityView = new VelocityViewRender();
 //        velocityView.setUrl("hello.vm");
 //        Map<String, Object> model = newHashMap();
 //        User siteUser = new BIConversion.User("john");

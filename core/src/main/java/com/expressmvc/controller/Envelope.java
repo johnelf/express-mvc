@@ -12,8 +12,8 @@ public class Envelope {
         add(initialContents);
     }
 
-    public <T> T getObjectOf(Class<T> clazz) {
-        return (T)contentsMap.get(clazz.getName());
+    public static Envelope initWith(Object... objects) {
+        return new Envelope(objects);
     }
 
     public Envelope add(Object... contents) {

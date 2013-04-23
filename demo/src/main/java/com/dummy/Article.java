@@ -2,7 +2,7 @@ package com.dummy;
 
 import com.expressmvc.annotation.ViewIngredient;
 
-@ViewIngredient("_article_name_in_view_template")
+@ViewIngredient("_article")
 public class Article {
     private String url;
     private String tittle;

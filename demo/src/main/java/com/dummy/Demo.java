@@ -10,7 +10,7 @@ import org.glassfish.grizzly.servlet.WebappContext;
 import java.io.IOException;
 
 public class Demo {
-    public static final int PORT = 9090;
+    public static final int PORT = 3000;
     public static final String HOST = "localhost";
 
     public static void main(String[] args) throws IOException {

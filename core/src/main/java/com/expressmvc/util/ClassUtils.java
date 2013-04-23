@@ -1,7 +1,11 @@
-package com.expressmvc.utility;
+package com.expressmvc.util;
 
-public class IOCUtility {
-    public static Boolean isFieldBasicType(Class<?> type) {
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+public class ClassUtils {
+    public static Boolean isBasicType(Class<?> type) {
+        //TODO: convert to map and contains
         return type.equals(Boolean.class) || type.equals(boolean.class)
                 || type.equals(Byte.class) || type.equals(byte.class)
                 || type.equals(Short.class) || type.equals(short.class) ||
@@ -25,6 +29,23 @@ public class IOCUtility {
         } else if (type.equals(float.class)) {
             return Float.parseFloat(value);
         }
+        return null;
+    }
+
+    public static Object newInstanceOf(Class paramClazz) {
+        try {
+            Constructor cons = paramClazz.getDeclaredConstructor();
+            return cons.newInstance();
+        } catch (NoSuchMethodException e) {
+            //TODO
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
         return null;
     }
 }

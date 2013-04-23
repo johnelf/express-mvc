@@ -12,12 +12,12 @@ public class IntegrationTest {
     @Test
     public void should_show_default_view_of_form() {
         RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 9090;
+        RestAssured.port = 3000;
 
         given().queryParam("name", "aaa")
         .expect()
         .statusCode(HttpServletResponse.SC_OK)
-        .when().post("/demo");
+        .when().post("/demo/article");
     }
 
 

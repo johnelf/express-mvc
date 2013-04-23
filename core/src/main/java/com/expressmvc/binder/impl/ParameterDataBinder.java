@@ -2,28 +2,29 @@ package com.expressmvc.binder.impl;
 
 import com.expressmvc.binder.DataBinder;
 import com.expressmvc.exception.DataBindException;
-import com.expressmvc.utility.IOCUtility;
+import com.expressmvc.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
 
+//TODO should be singleton lifecycle
 public class ParameterDataBinder implements DataBinder {
 
     @Override
-    public void bind(HttpServletRequest request, Object parameter) throws Exception {
+    public void bind(HttpServletRequest request, Object parameter) throws DataBindException {
         try {
             doBind(request, parameter, getClazzName(parameter));
         } catch (Exception e) {
-            throw new DataBindException();
+            throw new DataBindException(e);
         }
     }
 
-    private void doBind(HttpServletRequest request, Object parameter, String preFix) throws Exception {
+    private void doBind(HttpServletRequest request, Object parameter, String prefix) throws Exception {
         for (Field field : parameter.getClass().getDeclaredFields()) {
             field.setAccessible(true);
-            if (IOCUtility.isFieldBasicType(field.getType())) {
-                String requestValue = request.getParameter(preFix + "." + getMemberName(field));
+            if (ClassUtils.isBasicType(field.getType())) {
+                String requestValue = request.getParameter(prefix + "." + getMemberName(field));
                 if (requestValue == null) {
                     continue;
                 }
@@ -31,7 +32,7 @@ public class ParameterDataBinder implements DataBinder {
             } else {
                 Object nestedParameter = field.getType().newInstance();
                 field.set(parameter, nestedParameter);
-                doBind(request, nestedParameter, preFix + "." + getClazzName(nestedParameter));
+                doBind(request, nestedParameter, prefix + "." + getClazzName(nestedParameter));
             }
         }
     }
@@ -56,7 +57,7 @@ public class ParameterDataBinder implements DataBinder {
             }
         }
 
-        return IOCUtility.assembleParameter(value, type);
+        return ClassUtils.assembleParameter(value, type);
     }
 
     private String getMemberParams(String[] members) {

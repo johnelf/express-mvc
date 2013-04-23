@@ -1,14 +1,10 @@
 package com.expressmvc.test;
 
-import com.expressmvc.ModelAndView;
 import com.expressmvc.annotation.Path;
-import com.expressmvc.controller.BaseController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.expressmvc.controller.AppController;
 
 @Path("/article")
-public class ArticleController extends BaseController {
+public class ArticleController extends AppController {
     private final MailService mailService;
 
     public ArticleController(MailService mailService) {
@@ -16,11 +12,12 @@ public class ArticleController extends BaseController {
     }
 
     //@Post
-    @Override
-    public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
-        this.mailService.sendNotificationMailToReader();
-        ModelAndView modelAndView = new ModelAndView();
-        //TOOD set model
-        return modelAndView;
-    }
+//    @Override
+//    public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
+//        this.mailService.sendNotificationMailToReader();
+//        ModelAndView modelAndView = new ModelAndView();
+//        //TOOD set model
+//        return modelAndView;
+//    }
+
 }

@@ -1,13 +1,11 @@
 <html>
-<head>
-</head>
-<body>
-<form name="createArticle" method="POST" action="/article">
-<input type="text" name="article.title" />
-<input type="text" name="article.tags" />
-<input type="text" name="article.author.name" />
-<input type="button" value="send" />
-</form>
-</body>
+  <body>
+    <form name="createArticle" method="POST" action="/demo/article">
+      Article title: <input type="text" name="article.title" /><br>
+      Article tags:  <input type="text" name="article.tags" /><br>
+      Author name:   <input type="text" name="article.author.name" /><br>
+      Author email:  <input type="submit" value="send" /><br>
+    </form>
+    $_article.url
+  </body>
 </html>
-
