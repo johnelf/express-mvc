@@ -1,3 +1,13 @@
-hello world again!
+<html>
+<head>
+</head>
+<body>
+<form name="createArticle" method="POST" action="/article">
+<input type="text" name="article.title" />
+<input type="text" name="article.tags" />
+<input type="text" name="article.author.name" />
+<input type="button" value="send" />
+</form>
+</body>
+</html>
 
-TODO: show article form here
