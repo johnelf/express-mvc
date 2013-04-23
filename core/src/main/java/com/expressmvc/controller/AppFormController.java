@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 
-public abstract class AppFormController<T> extends BaseController {
+public class AppFormController extends BaseController {
 
     @Override
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
-        T requestModel = bindRequestParametersToModel(req);
-        Envelope envelope = handleFormSubmit(new Envelope(req, resp), requestModel);
+        //T requestModel = bindRequestParametersToModel(req);
+
+        Envelope envelope = null; //handleFormSubmit(new Envelope(req, resp), requestModel);
+
         return createModelAndViewBasedOn(envelope);
     }
 
@@ -38,9 +40,4 @@ public abstract class AppFormController<T> extends BaseController {
         return mv;
     }
 
-    private T bindRequestParametersToModel(HttpServletRequest req) {
-        return null;
-    }
-
-    public abstract Envelope handleFormSubmit(Envelope envelope, T requestModel);
 }

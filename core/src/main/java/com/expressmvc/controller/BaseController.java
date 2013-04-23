@@ -4,6 +4,7 @@ import com.expressmvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public abstract class BaseController {
     public void service(HttpServletRequest req, HttpServletResponse resp) {
@@ -15,7 +16,12 @@ public abstract class BaseController {
         }
 
         render(mv, req, resp);
-        //render modelAndView
+
+        try {
+            resp.getWriter().write("this is a fake rending message. remove me.");
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     private String getConventionalViewFor(HttpServletRequest req) {

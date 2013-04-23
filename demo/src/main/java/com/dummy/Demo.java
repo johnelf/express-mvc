@@ -14,6 +14,10 @@ public class Demo {
     public static final String HOST = "localhost";
 
     public static void main(String[] args) throws IOException {
+        startServer();
+    }
+
+    public static void startServer() throws IOException {
         HttpServer httpServer = HttpServer.createSimpleServer("/", HOST, PORT);
         WebappContext ctx = new WebappContext("demo", "/demo");
 

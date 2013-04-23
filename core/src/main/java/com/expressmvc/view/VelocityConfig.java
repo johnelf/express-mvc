@@ -7,7 +7,7 @@ import org.apache.velocity.exception.VelocityException;
 import java.util.Properties;
 
 public class VelocityConfig {
-    public static final String PRE_FIX = "/WEB-INF/templates";
+    public static final String PRE_FIX = "/WEB-INF/views";
 
     public VelocityEngine velocityEngine;
 
