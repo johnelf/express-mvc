@@ -8,15 +8,14 @@ import static com.google.common.collect.Maps.newHashMap;
 
 public class ModelAndView {
     private Map<String, Object> viewIngredients = newHashMap();
-    private String viewTemplateName;
+    private String viewTemplate;
 
     public ModelAndView(HttpServletRequest req) {
-        this.viewTemplateName = getConventionalViewTemplate(req);
+        this.viewTemplate = getConventionalViewTemplate(req);
     }
 
     private String getConventionalViewTemplate(HttpServletRequest request) {
-        //String pathInContext = request.getRequestURI().substring(request.getContextPath().length());
-        //return request.getContextPath() + "/WEB-INF/views" + pathInContext + "/article.vm"; //TODO
+        String pathInContext = request.getRequestURI().substring(request.getContextPath().length());
         return "/article/article.vm";
     }
 
@@ -28,7 +27,7 @@ public class ModelAndView {
         return Collections.unmodifiableMap(viewIngredients);
     }
 
-    public String getViewTemplateName() {
-        return viewTemplateName;
+    public String getTemplate() {
+        return viewTemplate;
     }
 }
