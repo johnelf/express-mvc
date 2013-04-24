@@ -1,4 +1,4 @@
-package com.expressmvc.test;
+package com.dummy.models;
 
 public class Author {
     private String name;

@@ -1,7 +1,7 @@
 package com.expressmvc.controller;
 
 import com.expressmvc.controller.impl.AnnotationBasedMappingResolver;
-import com.expressmvc.test.ArticleController;
+import com.expressmvc.fixture.TestPathAnnotationController;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +32,6 @@ public class AnnotationBasedMappingResolverTest {
         resolver.init(servletConfig);
 
         Class controllerForArticleClass = resolver.getControllerFor("/demo/article");
-        assertThat(controllerForArticleClass == ArticleController.class, is(true));
+        assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
     }
 }

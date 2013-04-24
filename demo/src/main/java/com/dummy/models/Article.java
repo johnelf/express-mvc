@@ -4,16 +4,25 @@ import com.expressmvc.annotation.ViewIngredient;
 
 @ViewIngredient("_article")
 public class Article {
-    private String url;
-    private String tittle;
+    private String title;
+    private Author author;
     private String tags;
+    private String url;
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public String getTags() {
@@ -24,11 +33,11 @@ public class Article {
         this.tags = tags;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

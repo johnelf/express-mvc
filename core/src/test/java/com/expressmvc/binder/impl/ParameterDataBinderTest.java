@@ -1,6 +1,5 @@
 package com.expressmvc.binder.impl;
 
-import com.expressmvc.test.Article;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,5 +42,54 @@ public class ParameterDataBinderTest {
     }
 
 
+    public static class Article {
+        private String title;
+        private Author author;
+        private String tags;
 
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public Author getAuthor() {
+            return author;
+        }
+
+        public void setAuthor(Author author) {
+            this.author = author;
+        }
+
+        public String getTags() {
+            return tags;
+        }
+
+        public void setTags(String tags) {
+            this.tags = tags;
+        }
+    }
+
+    public static class Author {
+        private String name;
+        private String email;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+    }
 }
