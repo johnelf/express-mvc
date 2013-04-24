@@ -1,8 +1,10 @@
 package com.expressmvc.controller.impl;
 
+import com.expressioc.annotation.Singleton;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.controller.BaseController;
 import com.expressmvc.controller.MappingResolver;
+import com.expressmvc.initializer.NeedInitByServletConfig;
 import com.google.common.base.Strings;
 import com.google.common.reflect.ClassPath;
 
@@ -12,7 +14,8 @@ import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 
-public class AnnotationBasedMappingResolver implements MappingResolver {
+@Singleton
+public class AnnotationBasedMappingResolver implements MappingResolver, NeedInitByServletConfig{
     private Map<String, Class<? extends BaseController>> urlHandlerMapping = newHashMap();
     private String contextPath;
 

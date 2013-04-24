@@ -2,9 +2,10 @@ package com.expressmvc.servlet;
 
 import com.expressioc.Container;
 import com.expressioc.ExpressContainer;
+import com.expressioc.scope.ContainerAware;
 import com.expressmvc.controller.BaseController;
 import com.expressmvc.controller.MappingResolver;
-import com.expressmvc.view.VelocityConfig;
+import com.expressmvc.initializer.NeedInitByServletConfig;
 import com.google.common.base.Strings;
 
 import javax.servlet.ServletConfig;
@@ -13,20 +14,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
-public class DispatchServlet extends HttpServlet {
+public class DispatchServlet extends HttpServlet implements ContainerAware {
     private Container containerOfThisWebApp;
     private MappingResolver mappingResolver;
+    private Container containerWhereThisObjectIn;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        mappingResolver.init(config);
 
         Container frameworkContainer = new ExpressContainer("com.expressmvc");
         containerOfThisWebApp = createNewObjectContainer(config, frameworkContainer);
 
-        VelocityConfig.init(getServletContext().getContextPath());
+        List<NeedInitByServletConfig> objectsNeedInit = containerWhereThisObjectIn.getImplementationObjectListOf(NeedInitByServletConfig.class);
+        for (NeedInitByServletConfig o: objectsNeedInit) {
+            o.init(config);
+        }
     }
 
     @Override
@@ -64,5 +69,10 @@ public class DispatchServlet extends HttpServlet {
         }
 
         return new ExpressContainer(webAppRootPackage, parentContainer);
+    }
+
+    @Override
+    public void awareContainer(Container container) {
+        this.containerWhereThisObjectIn = container;
     }
 }
