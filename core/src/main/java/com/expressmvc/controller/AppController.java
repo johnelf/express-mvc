@@ -54,8 +54,8 @@ public class AppController extends BaseController {
         Class<?>[] parameterTypes = httpGetHandler.getParameterTypes();
         for (Class paramClazz : parameterTypes) {
             //TODO check know type, such as HttpServletRequest, and HttpServletResponse
-            Object param = ClassUtils.newInstanceOf(paramClazz); //TODO using ioc to initialize object
 
+            Object param = ClassUtils.newInstanceOf(paramClazz); //TODO using ioc to initialize object
             try {
                 dataBinder.bind(request, param);
             } catch (DataBindException e) {

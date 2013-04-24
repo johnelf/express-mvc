@@ -19,6 +19,4 @@ public class IntegrationTest {
         .statusCode(HttpServletResponse.SC_OK)
         .when().post("/demo/article");
     }
-
-
 }

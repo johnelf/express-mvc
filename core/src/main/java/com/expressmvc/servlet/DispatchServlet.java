@@ -16,17 +16,16 @@ import java.io.IOException;
 
 public class DispatchServlet extends HttpServlet {
     public static final String MODEL_INSTANCE_CREATOR = "modelInstanceCreator";  //TODO move
-
-    private Container controllersContainer;
-    private Container modelInstanceCreator;
+    private Container containerOfThisWebApp;
     private MappingResolver mappingResolver;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         mappingResolver.init(config);
-        controllersContainer = initAppControllerContainer(config);
-        modelInstanceCreator = initAppControllerContainer(config);       //TODO init by append '/models'
+
+        Container frameworkContainer = new ExpressContainer("com.expressmvc");
+        containerOfThisWebApp = createNewObjectContainer(config, frameworkContainer);
         VelocityConfig.init(getServletContext().getContextPath());
     }
 
@@ -40,7 +39,6 @@ public class DispatchServlet extends HttpServlet {
             return;
         }
 
-        controller.setModelInstanceCreator(modelInstanceCreator);
         controller.service(req, resp);
     }
 
@@ -53,18 +51,18 @@ public class DispatchServlet extends HttpServlet {
 
         Class<? extends BaseController> controllerClazz = mappingResolver.getControllerFor(requestURI);
         if (controllerClazz != null) {
-            controller = controllersContainer.getComponent(controllerClazz);
+            controller = containerOfThisWebApp.getComponent(controllerClazz);
         }
 
         return controller;
     }
 
-    private Container initAppControllerContainer(ServletConfig config) {
+    private Container createNewObjectContainer(ServletConfig config, Container parentContainer) {
         String webAppRootPackage = config.getInitParameter(MappingResolver.WEB_APP_ROOT_PACKAGE);
         if (Strings.isNullOrEmpty(webAppRootPackage)) {
-            throw new IllegalStateException("need webapp_root_package parameter");
+            throw new IllegalStateException("need \"webapp_root_package\" parameter in ServletConfig to init webApp.");
         }
 
-        return new ExpressContainer(webAppRootPackage);
+        return new ExpressContainer(webAppRootPackage, parentContainer);
     }
 }
