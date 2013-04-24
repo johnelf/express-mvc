@@ -8,6 +8,7 @@ import com.expressmvc.controller.Envelope;
 
 @Path("/article")
 public class ArticleController extends AppController {
+
     @POST
     public Envelope create(Article article) {
         article.setUrl("http://www.example.com/2013/article_1");

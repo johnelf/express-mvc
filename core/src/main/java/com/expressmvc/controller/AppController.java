@@ -5,7 +5,6 @@ import com.expressmvc.annotation.ViewIngredient;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
 import com.expressmvc.binder.DataBinder;
-import com.expressmvc.exception.DataBindException;
 import com.expressmvc.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -23,49 +21,43 @@ public class AppController extends BaseController {
 
     @Override
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
-        Envelope envelope = null;
 
-        String requestMethod = req.getMethod();
-        Method methodForRequest = null;
+        Method handlerMethod = getHandlerMethodInController(req);
 
-        if ("GET".equals(requestMethod)) {
-            methodForRequest = findMethodWith(GET.class); //TODO multi GET Path annotations support
-            if (methodForRequest == null) {
-                return new ModelAndView(req);
-            }
-        } else if ("POST".equals(requestMethod)){
-            methodForRequest = findMethodWith(POST.class);
+        //when no correspond method to handle request, this maybe a GET request,
+        //then return render result of conventional template.vm
+        if (handlerMethod == null) {
+            return new ModelAndView(req);
         }
 
-        Object[] parameters = assembleParametersFor(methodForRequest, req);
+        return handleRequestBy(handlerMethod, req, resp);
+    }
+
+    private ModelAndView handleRequestBy(Method handlerMethod, HttpServletRequest req, HttpServletResponse resp) {
+        Envelope envelope = null;
+
+        Object[] params = assembleParametersFor(handlerMethod, req, resp);
 
         try {
-            envelope = (Envelope) methodForRequest.invoke(this, parameters); //TODO force cast? without result method?
-        } catch (IllegalAccessException e) {                                 //TODO
+            envelope = (Envelope) handlerMethod.invoke(this, params);
+        } catch (IllegalAccessException e) {
         } catch (InvocationTargetException e) {
         }
 
-        return createModelAndViewBasedOn(envelope, req);
+        return createModelAndView(envelope, req);
     }
 
-    private Object[] assembleParametersFor(Method httpGetHandler, HttpServletRequest request) {
-        ArrayList<Object> params = newArrayList();
+    private Method getHandlerMethodInController(HttpServletRequest req) {
+        Method methodForRequest = null;
+        String requestMethod = req.getMethod();
 
-        Class<?>[] parameterTypes = httpGetHandler.getParameterTypes();
-        for (Class paramClazz : parameterTypes) {
-            //TODO check know type, such as HttpServletRequest, and HttpServletResponse
-
-            Object param = ClassUtils.newInstanceOf(paramClazz); //TODO using ioc to initialize object
-            try {
-                dataBinder.bind(request, param);
-            } catch (DataBindException e) {
-                //TODO
-            }
-
-            params.add(param);
+        if ("GET".equals(requestMethod)) {
+            methodForRequest = findMethodWith(GET.class);
+        } else if ("POST".equals(requestMethod)) {
+            methodForRequest = findMethodWith(POST.class);
         }
 
-        return params.toArray(new Object[params.size()]); //TODO test zero parameter
+        return methodForRequest;
     }
 
     private Method findMethodWith(Class<? extends Annotation> annotationClass) {
@@ -79,21 +71,43 @@ public class AppController extends BaseController {
         return null;
     }
 
-    private ModelAndView createModelAndViewBasedOn(Envelope envelope, HttpServletRequest request) {
+    private Object[] assembleParametersFor(Method handlerMethod, HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<Object> params = newArrayList();
+
+        Class<?>[] parameterTypes = handlerMethod.getParameterTypes();
+        for (Class paramClazz : parameterTypes) {
+
+            if (HttpServletRequest.class.equals(paramClazz)) {
+                params.add(request);
+                continue;
+            }
+
+            if (HttpServletResponse.class.equals(paramClazz)) {
+                params.add(response);
+                continue;
+            }
+
+            Object param = ClassUtils.newInstanceOf(paramClazz);
+
+            dataBinder.bind(request, param);
+
+            params.add(param);
+        }
+
+        return params.toArray(new Object[params.size()]);
+    }
+
+    private ModelAndView createModelAndView(Envelope envelope, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView(request);
         return putViewIngredientsIntoMV(envelope, mv);
     }
 
     private ModelAndView putViewIngredientsIntoMV(Envelope envelope, ModelAndView mv) {
-        Iterator contentsIterator = envelope.getContentsIterator();
+        for (Object o : envelope.getContents().values()) {
 
-        while (contentsIterator.hasNext()) {
-            Object o = contentsIterator.next();
-            Class<?> clazz = o.getClass();
-
-            boolean isViewIngredients = clazz.isAnnotationPresent(ViewIngredient.class);
-            if (isViewIngredients) {
-                String ingredientName = clazz.getAnnotation(ViewIngredient.class).value();
+            boolean isViewIngredient = o.getClass().isAnnotationPresent(ViewIngredient.class);
+            if (isViewIngredient) {
+                String ingredientName = o.getClass().getAnnotation(ViewIngredient.class).value();
                 mv.addViewIngredient(ingredientName, o);
             }
         }

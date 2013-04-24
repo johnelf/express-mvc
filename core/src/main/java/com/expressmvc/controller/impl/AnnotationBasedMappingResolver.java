@@ -3,6 +3,7 @@ package com.expressmvc.controller.impl;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.controller.BaseController;
 import com.expressmvc.controller.MappingResolver;
+import com.google.common.base.Strings;
 import com.google.common.reflect.ClassPath;
 
 import javax.servlet.ServletConfig;
@@ -19,16 +20,18 @@ public class AnnotationBasedMappingResolver implements MappingResolver {
 
     @Override
     public void init(ServletConfig config) {
-        String scanPath = config.getInitParameter(WEB_APP_ROOT_PACKAGE);
-        //TODO: check scanPath
+        String webAppRootPackage = config.getInitParameter(WEB_APP_ROOT_PACKAGE);
+        if (Strings.isNullOrEmpty(webAppRootPackage)) {  //TODO DRY
+            throw new IllegalStateException("need \"webapp_root_package\" parameter in ServletConfig to init webApp.");
+        }
 
         contextPath = config.getServletContext().getContextPath();
-        resolveControllerMapping(scanPath);
+        resolveControllerMapping(webAppRootPackage);
     }
 
     @Override
     public Class<? extends BaseController> getControllerFor(String url) {
-        return urlHandlerMapping.get(getControllerMapping(url));
+        return urlHandlerMapping.get(url);
     }
 
     private void resolveControllerMapping(String packageNameToScan) {
@@ -49,11 +52,5 @@ public class AnnotationBasedMappingResolver implements MappingResolver {
 
     private void addUrlHandlerMapping(Class<? extends BaseController> clazz, String urlToHandle) {
         urlHandlerMapping.put(contextPath + urlToHandle, clazz);
-    }
-
-    private String getControllerMapping(String url) {
-        Pattern pattern = Pattern.compile("^(/[^./]+/[^./]+)/?[^.]*$");
-        Matcher matcher = pattern.matcher(url);
-        return matcher.find() ? matcher.group(1) : "";
     }
 }

@@ -6,6 +6,6 @@
       Author name:   <input type="text" name="article.author.name" /><br>
       Author email:  <input type="submit" value="send" /><br>
     </form>
-    $_article.viewName
+    $_article.url
   </body>
 </html>

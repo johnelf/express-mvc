@@ -1,5 +1,6 @@
 package com.expressmvc.controller;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -28,5 +29,9 @@ public class Envelope {
 
     public Iterator getContentsIterator() {
         return contentsMap.values().iterator();
+    }
+
+    public final Map<String, Object> getContents() {
+        return Collections.unmodifiableMap(contentsMap);
     }
 }

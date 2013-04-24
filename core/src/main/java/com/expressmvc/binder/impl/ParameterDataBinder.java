@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
 
-//TODO should be singleton lifecycle
 public class ParameterDataBinder implements DataBinder {
 
     @Override

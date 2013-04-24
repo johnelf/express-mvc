@@ -19,9 +19,6 @@ public class VelocityConfig {
         Properties properties = new Properties();
         String basePath = System.getProperty("user.dir") + contextPath + PRE_FIX;
         properties.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, basePath);
-        properties.put("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.SimpleLog4JLogSystem");
-        properties.put("runtime.log.logsystem.log4j.category", "velocity");
-        properties.put("runtime.log.logsystem.log4j.logger", "velocity");
         try {
             Velocity.init(properties);
         } catch (Exception e) {

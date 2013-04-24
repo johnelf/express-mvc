@@ -11,21 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class VelocityViewRender implements ViewRender {
-    private String viewName;
-
-    public String getViewName() {
-        return viewName;
-    }
-
-    public void setViewName(String viewName) {
-        this.viewName = viewName;
-    }
-
     @Override
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) {
-        response.setHeader("Pragma", "private");
-        response.setHeader("Cache-Control", "private, must-revalidate");
-
         Context context = new VelocityContext(mv.getViewIngredients());
 
         try {
