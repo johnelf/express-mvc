@@ -10,14 +10,4 @@ public class ArticleController extends AppController {
     public ArticleController(MailService mailService) {
         this.mailService = mailService;
     }
-
-    //@Post
-//    @Override
-//    public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
-//        this.mailService.sendNotificationMailToReader();
-//        ModelAndView modelAndView = new ModelAndView();
-//        //TOOD set model
-//        return modelAndView;
-//    }
-
 }
