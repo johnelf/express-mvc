@@ -42,19 +42,8 @@ public class DispatchServlet extends HttpServlet {
         controller.service(req, resp);
     }
 
-<<<<<<< HEAD
     public void setMappingResolver(MappingResolver mappingResolver) {
         this.mappingResolver = mappingResolver;
-=======
-//        VelocityViewRender velocityView = new VelocityViewRender();
-//        velocityView.setViewName("hello.vm");
-//        Map<String, Object> model = newHashMap();
-//        User siteUser = new BIConversion.User("john");
-//        Map<String, Object> model = new HashMap<String, Object>();
-//        Article siteUser = new BIConversion.Article("john");
-//        model.put("user", siteUser);
-//        velocityView.render(model, req, resp);
->>>>>>> add velocity render method
     }
 
     private BaseController getControllerFor(String requestURI) {

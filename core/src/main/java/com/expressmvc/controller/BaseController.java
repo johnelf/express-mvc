@@ -13,10 +13,6 @@ public abstract class BaseController {
 
         ModelAndView mv = doService(req, resp);
 
-        if (!mv.hasView()) {
-//            mv.(getConventionalViewFor(req));
-        }
-
         render(mv, req, resp);
 
         try {

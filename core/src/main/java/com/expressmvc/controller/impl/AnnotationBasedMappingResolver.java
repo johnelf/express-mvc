@@ -8,6 +8,8 @@ import com.google.common.reflect.ClassPath;
 import javax.servlet.ServletConfig;
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -26,8 +28,7 @@ public class AnnotationBasedMappingResolver implements MappingResolver {
 
     @Override
     public Class<? extends BaseController> getControllerFor(String url) {
-        //TODO: support wildcard matching
-        return urlHandlerMapping.get(url);
+        return urlHandlerMapping.get(getControllerMapping(url));
     }
 
     private void resolveControllerMapping(String packageNameToScan) {
@@ -48,5 +49,11 @@ public class AnnotationBasedMappingResolver implements MappingResolver {
 
     private void addUrlHandlerMapping(Class<? extends BaseController> clazz, String urlToHandle) {
         urlHandlerMapping.put(contextPath + urlToHandle, clazz);
+    }
+
+    private String getControllerMapping(String url) {
+        Pattern pattern = Pattern.compile("^(/[^./]+/[^./]+)/?[^.]*$");
+        Matcher matcher = pattern.matcher(url);
+        return matcher.find() ? matcher.group(1) : "";
     }
 }
