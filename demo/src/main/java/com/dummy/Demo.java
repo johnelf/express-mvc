@@ -23,7 +23,7 @@ public class Demo {
 
         Container container = new ExpressContainer("com.expressmvc");
         final ServletRegistration reg = ctx.addServlet("", container.getComponent(DispatchServlet.class));
-        reg.setInitParameter("package-to-scan", "com.dummy");
+        reg.setInitParameter("webapp_root_package", "com.dummy");
         reg.addMapping("/");
 
         ctx.deploy(httpServer);

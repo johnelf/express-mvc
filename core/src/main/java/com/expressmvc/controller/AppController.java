@@ -23,7 +23,7 @@ public class AppController extends BaseController {
 
     @Override
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
-        Envelope envelope = null; //handleFormSubmit(new Envelope(req, resp), requestModel);
+        Envelope envelope = null;
 
         String requestMethod = req.getMethod();
         Method methodForRequest = null;

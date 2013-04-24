@@ -12,13 +12,12 @@ import java.util.Map;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class AnnotationBasedMappingResolver implements MappingResolver {
-    public static final String PACKAGE_TO_SCAN = "package-to-scan";
     private Map<String, Class<? extends BaseController>> urlHandlerMapping = newHashMap();
     private String contextPath;
 
     @Override
     public void init(ServletConfig config) {
-        String scanPath = config.getInitParameter(PACKAGE_TO_SCAN);
+        String scanPath = config.getInitParameter(WEB_APP_ROOT_PACKAGE);
         //TODO: check scanPath
 
         contextPath = config.getServletContext().getContextPath();

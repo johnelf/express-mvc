@@ -1,4 +1,4 @@
-package com.dummy;
+package com.dummy.models;
 
 import com.expressmvc.annotation.ViewIngredient;
 

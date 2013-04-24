@@ -1,5 +1,6 @@
 package com.dummy;
 
+import com.dummy.models.Article;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.annotation.http.POST;
 import com.expressmvc.controller.AppController;

@@ -20,10 +20,6 @@ public class ModelAndView {
         return "/article/article.vm";
     }
 
-    public boolean hasView() {
-        return false;
-    }
-
     public void addViewIngredient(String name, Object ingredient) {
         viewIngredients.put(name, ingredient);
     }

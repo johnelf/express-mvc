@@ -1,5 +1,6 @@
 package com.expressmvc.controller;
 
+import com.expressioc.Container;
 import com.expressmvc.ModelAndView;
 import com.expressmvc.view.ViewRender;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class BaseController {
     private ViewRender viewRender;
+    private Container instanceCreator;
 
     public void service(HttpServletRequest req, HttpServletResponse resp) {
         ModelAndView mv = doService(req, resp);
@@ -22,5 +24,13 @@ public abstract class BaseController {
 
     public void setViewRender(ViewRender viewRender) {
         this.viewRender = viewRender;
+    }
+
+    public void setModelInstanceCreator(Container instanceCreator) {
+        this.instanceCreator = instanceCreator;
+    }
+
+    public Container getInstanceCreator() {
+        return instanceCreator;
     }
 }
