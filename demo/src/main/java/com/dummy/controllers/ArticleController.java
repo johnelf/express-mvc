@@ -19,7 +19,7 @@ public class ArticleController extends AppController {
     public Envelope create(Article article) {
 
         //fake business logic
-        article.setUrl("http://www.example.com/2013/article_1");
+        article.setUrl("http://www.example.com/2013/" + article.getAuthor().getName() + "/" + article.getTitle());
 
         //using injected service
         mailService.sendMail("a@b.com", article.toString());

@@ -6,7 +6,6 @@ import com.expressmvc.annotation.ViewIngredient;
 public class Article {
     private String title;
     private Author author;
-    private String tags;
     private String url;
 
     public String getTitle() {
@@ -23,14 +22,6 @@ public class Article {
 
     public void setAuthor(Author author) {
         this.author = author;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
     }
 
     public void setUrl(String url) {

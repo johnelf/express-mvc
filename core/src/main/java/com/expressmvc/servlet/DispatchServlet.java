@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class DispatchServlet extends HttpServlet {
-    public static final String MODEL_INSTANCE_CREATOR = "modelInstanceCreator";  //TODO move
     private Container containerOfThisWebApp;
     private MappingResolver mappingResolver;
 
@@ -59,7 +58,7 @@ public class DispatchServlet extends HttpServlet {
     private Container createNewObjectContainer(ServletConfig config, Container parentContainer) {
         String webAppRootPackage = config.getInitParameter(MappingResolver.WEB_APP_ROOT_PACKAGE);
         if (Strings.isNullOrEmpty(webAppRootPackage)) {
-            throw new IllegalStateException("need \"webapp_root_package\" parameter in ServletConfig to init webApp.");
+            throw new IllegalStateException("need webapp_root_package parameter in ServletConfig to init webApp.");
         }
 
         return new ExpressContainer(webAppRootPackage, parentContainer);

@@ -6,7 +6,8 @@ import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,9 +31,9 @@ public class ParameterDataBinderTest {
     public void should_bind_correct_object() throws Exception {
         parameterDataBinder.bind(request, article);
 
-        assertNotNull(article.getTitle());
-        assertNotNull(article.getAuthor().getName());
-        assertNotNull(article.getAuthor().getEmail());
+        assertThat(article.getTitle(), is("Article"));
+        assertThat(article.getAuthor().getName(), is("Author"));
+        assertThat(article.getAuthor().getEmail(), is("express-mvc@thoughtworks.com"));
     }
 
     @Test

@@ -23,9 +23,6 @@ public class AppController extends BaseController {
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
 
         Method handlerMethod = getHandlerMethodInController(req);
-
-        //when no correspond method to handle request, this maybe a GET request,
-        //then return render result of conventional template.vm
         if (handlerMethod == null) {
             return new ModelAndView(req);
         }
