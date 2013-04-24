@@ -1,7 +1,7 @@
 package com.expressmvc.view;
 
 import com.expressmvc.ModelAndView;
-import com.expressmvc.exception.MergeTemplateException;
+import com.expressmvc.exception.RenderException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -14,13 +14,11 @@ public class VelocityViewRender implements ViewRender {
     @Override
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) {
         Context context = new VelocityContext(mv.getViewIngredients());
-
         try {
             getTemplate(mv.getTemplate()).merge(context, response.getWriter());
         } catch (Exception e) {
-            throw new MergeTemplateException();
+            throw new RenderException(e);
         }
-
     }
 
     public Template getTemplate(String url) throws Exception {

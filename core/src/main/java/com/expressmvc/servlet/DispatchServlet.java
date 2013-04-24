@@ -22,8 +22,10 @@ public class DispatchServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         mappingResolver.init(config);
+
         Container frameworkContainer = new ExpressContainer("com.expressmvc");
         containerOfThisWebApp = createNewObjectContainer(config, frameworkContainer);
+
         VelocityConfig.init(getServletContext().getContextPath());
     }
 
