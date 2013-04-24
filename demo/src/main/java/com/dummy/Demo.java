@@ -2,7 +2,7 @@ package com.dummy;
 
 import com.expressioc.Container;
 import com.expressioc.ExpressContainer;
-import com.expressmvc.servlet.DispatchServlet;
+import com.expressmvc.DispatchServlet;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;

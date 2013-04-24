@@ -4,7 +4,7 @@ import com.expressioc.annotation.Singleton;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.controller.BaseController;
 import com.expressmvc.controller.MappingResolver;
-import com.expressmvc.initializer.NeedInitByServletConfig;
+import com.expressmvc.NeedInitByServletConfig;
 import com.google.common.base.Strings;
 import com.google.common.reflect.ClassPath;
 

@@ -1,5 +1,6 @@
-package com.expressmvc.binder.impl;
+package com.expressmvc.controller;
 
+import com.expressmvc.controller.impl.ParameterDataBinder;
 import com.expressmvc.fixture.Article;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,6 @@
 package com.expressmvc.view;
 
-import com.expressmvc.initializer.NeedInitByServletConfig;
+import com.expressmvc.NeedInitByServletConfig;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.VelocityException;
 

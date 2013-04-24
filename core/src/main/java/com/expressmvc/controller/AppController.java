@@ -5,7 +5,6 @@ import com.expressmvc.ModelAndView;
 import com.expressmvc.annotation.ViewIngredient;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
-import com.expressmvc.binder.DataBinder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

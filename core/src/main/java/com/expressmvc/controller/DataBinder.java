@@ -1,4 +1,4 @@
-package com.expressmvc.binder;
+package com.expressmvc.controller;
 
 import com.expressmvc.exception.DataBindException;
 

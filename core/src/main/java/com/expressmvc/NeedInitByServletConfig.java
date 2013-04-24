@@ -1,4 +1,4 @@
-package com.expressmvc.initializer;
+package com.expressmvc;
 
 import javax.servlet.ServletConfig;
 

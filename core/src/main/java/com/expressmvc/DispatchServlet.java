@@ -1,11 +1,10 @@
-package com.expressmvc.servlet;
+package com.expressmvc;
 
 import com.expressioc.Container;
 import com.expressioc.ExpressContainer;
 import com.expressioc.scope.ContainerAware;
 import com.expressmvc.controller.BaseController;
 import com.expressmvc.controller.MappingResolver;
-import com.expressmvc.initializer.NeedInitByServletConfig;
 import com.google.common.base.Strings;
 
 import javax.servlet.ServletConfig;
@@ -47,10 +46,6 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
         controller.service(req, resp);
     }
 
-    public void setMappingResolver(MappingResolver mappingResolver) {
-        this.mappingResolver = mappingResolver;
-    }
-
     private BaseController getControllerFor(String requestURI) {
         BaseController controller = null;
 
@@ -74,5 +69,9 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
     @Override
     public void awareContainer(Container container) {
         this.containerWhereThisObjectIn = container;
+    }
+
+    public void setMappingResolver(MappingResolver mappingResolver) {
+        this.mappingResolver = mappingResolver;
     }
 }
