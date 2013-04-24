@@ -2,6 +2,7 @@ package com.dummy.models;
 
 public class Author {
     private String name;
+    private int age;
     private String email;
 
     public String getName() {
@@ -18,5 +19,13 @@ public class Author {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

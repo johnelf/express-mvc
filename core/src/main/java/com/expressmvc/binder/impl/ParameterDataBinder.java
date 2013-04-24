@@ -1,8 +1,8 @@
 package com.expressmvc.binder.impl;
 
+import com.expressioc.utility.ClassUtility;
 import com.expressmvc.binder.DataBinder;
 import com.expressmvc.exception.DataBindException;
-import com.expressmvc.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
@@ -22,7 +22,7 @@ public class ParameterDataBinder implements DataBinder {
     private void doBind(HttpServletRequest request, Object parameter, String prefix) throws Exception {
         for (Field field : parameter.getClass().getDeclaredFields()) {
             field.setAccessible(true);
-            if (ClassUtils.isBasicType(field.getType())) {
+            if (ClassUtility.isBasicType(field.getType())) {
                 String requestValue = request.getParameter(prefix + "." + getMemberName(field));
                 if (requestValue == null) {
                     continue;
@@ -45,7 +45,7 @@ public class ParameterDataBinder implements DataBinder {
         return field.getName().toLowerCase();
     }
 
-    private Object convert(Object parameter, String value, Class type) {
+    private Object convert(Object parameter, String value, Class type) throws Exception {
         String[] members = value.split(".");
         if (members.length > 1) {
             try {
@@ -56,7 +56,7 @@ public class ParameterDataBinder implements DataBinder {
             }
         }
 
-        return ClassUtils.assembleParameter(value, type);
+        return ClassUtility.assembleParameter(value, type);
     }
 
     private String getMemberParams(String[] members) {

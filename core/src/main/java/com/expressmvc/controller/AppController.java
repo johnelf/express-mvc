@@ -1,11 +1,11 @@
 package com.expressmvc.controller;
 
+import com.expressioc.utility.ClassUtility;
 import com.expressmvc.ModelAndView;
 import com.expressmvc.annotation.ViewIngredient;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
 import com.expressmvc.binder.DataBinder;
-import com.expressmvc.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,7 +84,7 @@ public class AppController extends BaseController {
                 continue;
             }
 
-            Object param = ClassUtils.newInstanceOf(paramClazz);
+            Object param = ClassUtility.newInstanceOf(paramClazz);
 
             dataBinder.bind(request, param);
 

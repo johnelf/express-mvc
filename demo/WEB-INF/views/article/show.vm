@@ -2,6 +2,7 @@
   <body>
     <form name="createArticle" method="POST" action="/demo/article">
       Author name:   <input type="text" name="article.author.name" /><br>
+      Author age:   <input type="text" name="article.author.age" /><br>
       Author email:  <input type="text" name="article.author.email" /><br>
       Article title: <input type="text" name="article.title" /><br>
       <input type="submit" value="public this article" /><br>
