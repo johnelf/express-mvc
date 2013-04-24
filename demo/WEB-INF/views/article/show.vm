@@ -2,8 +2,9 @@
   <body>
     <form name="createArticle" method="POST" action="/demo/article">
       Author name:   <input type="text" name="article.author.name" /><br>
+      Author email:  <input type="text" name="article.author.email" /><br>
       Article title: <input type="text" name="article.title" /><br>
-      Author email:  <input type="submit" value="public this article" /><br>
+      <input type="submit" value="public this article" /><br>
     </form>
 
     $_article.url

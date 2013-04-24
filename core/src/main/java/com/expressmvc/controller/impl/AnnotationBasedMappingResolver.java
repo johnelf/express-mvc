@@ -19,7 +19,7 @@ public class AnnotationBasedMappingResolver implements MappingResolver {
     @Override
     public void init(ServletConfig config) {
         String webAppRootPackage = config.getInitParameter(WEB_APP_ROOT_PACKAGE);
-        if (Strings.isNullOrEmpty(webAppRootPackage)) {  //TODO DRY
+        if (Strings.isNullOrEmpty(webAppRootPackage)) {
             throw new IllegalStateException("need webapp_root_package parameter in ServletConfig to init webApp.");
         }
 

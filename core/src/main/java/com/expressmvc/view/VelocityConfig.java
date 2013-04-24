@@ -8,6 +8,7 @@ import java.util.Properties;
 
 public class VelocityConfig {
     public static final String PRE_FIX = "/WEB-INF/views";
+    public static final String TEMPLATE_POSTFIX = ".vm";
 
     public VelocityEngine velocityEngine;
 

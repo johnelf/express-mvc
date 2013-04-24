@@ -28,18 +28,13 @@ public class IntegrationTest {
         return new Matcher<String>() {
             @Override
             public boolean matches(Object item) {
-                 return ((String)item).contains("__name__/__title__");
+                 return ((String)item).contains("__name__");
             }
 
             @Override
-            public void _dont_implement_Matcher___instead_extend_BaseMatcher_() {
-
-            }
-
+            public void _dont_implement_Matcher___instead_extend_BaseMatcher_() {}
             @Override
-            public void describeTo(Description description) {
-
-            }
+            public void describeTo(Description description) {}
         };
     }
 }

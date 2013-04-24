@@ -41,7 +41,7 @@ public class AppController extends BaseController {
         } catch (InvocationTargetException e) {
         }
 
-        return createModelAndView(envelope, req);
+        return createModelAndView(envelope, req, handlerMethod.getName());
     }
 
     private Method getHandlerMethodInController(HttpServletRequest req) {
@@ -94,8 +94,8 @@ public class AppController extends BaseController {
         return params.toArray(new Object[params.size()]);
     }
 
-    private ModelAndView createModelAndView(Envelope envelope, HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView(request);
+    private ModelAndView createModelAndView(Envelope envelope, HttpServletRequest request, String handlerMethodName) {
+        ModelAndView mv = new ModelAndView(request, handlerMethodName.toLowerCase());
         return putViewIngredientsIntoMV(envelope, mv);
     }
 
