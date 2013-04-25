@@ -3,7 +3,7 @@ package com.expressmvc.controller.impl;
 import com.expressioc.annotation.Singleton;
 import com.expressmvc.AppInitializer;
 import com.expressmvc.annotation.Path;
-import com.expressmvc.controller.BaseController;
+import com.expressmvc.controller.AppController;
 import com.expressmvc.controller.MappingResolver;
 import com.google.common.base.Strings;
 import com.google.common.reflect.ClassPath;
@@ -16,7 +16,7 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @Singleton
 public class AnnotationBasedMappingResolver implements MappingResolver, AppInitializer {
-    private Map<String, Class<? extends BaseController>> urlHandlerMapping = newHashMap();
+    private Map<String, Class<? extends AppController>> urlHandlerMapping = newHashMap();
     private String contextPath;
 
     @Override
@@ -31,7 +31,7 @@ public class AnnotationBasedMappingResolver implements MappingResolver, AppIniti
     }
 
     @Override
-    public Class<? extends BaseController> getControllerFor(String url) {
+    public Class<? extends AppController> getControllerFor(String url) {
         return urlHandlerMapping.get(url);
     }
 
@@ -40,18 +40,18 @@ public class AnnotationBasedMappingResolver implements MappingResolver, AppIniti
             ClassPath classpath = ClassPath.from(ClassLoader.getSystemClassLoader());
             for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(packageNameToScan)) {
                 Class<?> clazz = classInfo.load();
-                boolean isControllerWithAnnotation = BaseController.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(Path.class);
+                boolean isControllerWithAnnotation = AppController.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(Path.class);
 
                 if (isControllerWithAnnotation) {
                     String urlToHandle = clazz.getAnnotation(Path.class).value();
-                    addUrlHandlerMapping((Class<? extends BaseController>) clazz, urlToHandle);
+                    addUrlHandlerMapping((Class<? extends AppController>) clazz, urlToHandle);
                 }
             }
         } catch (IOException e) {
         }
     }
 
-    private void addUrlHandlerMapping(Class<? extends BaseController> clazz, String urlToHandle) {
+    private void addUrlHandlerMapping(Class<? extends AppController> clazz, String urlToHandle) {
         urlHandlerMapping.put(contextPath + urlToHandle, clazz);
     }
 }

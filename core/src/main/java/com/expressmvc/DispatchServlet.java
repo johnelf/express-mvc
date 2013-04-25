@@ -3,8 +3,10 @@ package com.expressmvc;
 import com.expressioc.Container;
 import com.expressioc.ExpressContainer;
 import com.expressioc.scope.ContainerAware;
-import com.expressmvc.controller.BaseController;
+import com.expressmvc.controller.AppController;
 import com.expressmvc.controller.MappingResolver;
+import com.expressmvc.view.View;
+import com.expressmvc.view.ViewResolver;
 import com.google.common.base.Strings;
 
 import javax.servlet.ServletConfig;
@@ -19,42 +21,58 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
     private Container containerOfThisWebApp;
     private MappingResolver mappingResolver;
     private Container containerWhereThisObjectIn;
+    private List<ViewResolver> viewResolvers;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        Container frameworkContainer = new ExpressContainer("com.expressmvc");
+        Container frameworkContainer = new ExpressContainer("com.expressmvc");         //move down
         containerOfThisWebApp = createNewObjectContainer(config, frameworkContainer);
 
-        List<AppInitializer> objectsNeedInit = containerWhereThisObjectIn.getImplementationObjectListOf(AppInitializer.class);
-        for (AppInitializer o: objectsNeedInit) {
-            o.init(config);
+        initFrameworkComponents(config);
+
+        viewResolvers = containerWhereThisObjectIn.getImplementationObjectListOf(ViewResolver.class);
+    }
+
+    private void initFrameworkComponents(ServletConfig config) {
+        List<AppInitializer> initializerList = containerWhereThisObjectIn.getImplementationObjectListOf(AppInitializer.class);
+        for (AppInitializer initializer: initializerList) {
+            initializer.init(config);
         }
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) {
-        BaseController controller = getControllerFor(req.getRequestURI());
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        AppController controller = getControllerFor(req.getRequestURI());
         if (controller == null) {
-            try {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (IOException e) {}
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        controller.service(req, resp);
+        ModelAndView mv = controller.doService(req, resp);
+        View view = resolveView(mv, req);
+        view.render(mv.getViewIngredients(), req, resp);
     }
 
-    private BaseController getControllerFor(String requestURI) {
-        BaseController controller = null;
-
-        Class<? extends BaseController> controllerClazz = mappingResolver.getControllerFor(requestURI);
-        if (controllerClazz != null) {
-            controller = containerOfThisWebApp.getComponent(controllerClazz);
+    private View resolveView(ModelAndView mv, HttpServletRequest req) throws ServletException {
+        for (ViewResolver viewResolver : viewResolvers) {
+            View view = viewResolver.findView(mv.getViewName());
+            if (view != null) {
+                return view;
+            }
         }
 
-        return controller;
+        throw new ServletException("can not resolve view for:" + req.getRequestURL());
+    }
+
+    private AppController getControllerFor(String requestURI) {
+        Class<? extends AppController> controllerClazz = mappingResolver.getControllerFor(requestURI);
+        if (controllerClazz != null) {
+            return containerOfThisWebApp.getComponent(controllerClazz);
+        }
+
+        return null;
     }
 
     private Container createNewObjectContainer(ServletConfig config, Container parentContainer) {

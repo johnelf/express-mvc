@@ -12,7 +12,7 @@ import static com.google.common.collect.Maps.newHashMap;
 public class ModelAndView {
     public static final String DEFAULT_VIEW = "/show.vm";
     private Map<String, Object> viewIngredients = newHashMap();
-    private String viewTemplate;
+    private String viewName;
 
     public ModelAndView(HttpServletRequest req) {
         this(req, null);
@@ -20,7 +20,7 @@ public class ModelAndView {
 
     public ModelAndView(HttpServletRequest req, String viewName) {
         String viewTemplateName = Strings.isNullOrEmpty(viewName) ? DEFAULT_VIEW : viewName + VelocityConfig.TEMPLATE_POSTFIX;
-        this.viewTemplate = getPathInContext(req) + "/" + viewTemplateName;
+        this.viewName = getPathInContext(req) + "/" + viewTemplateName;  //TODO move to resolver
     }
 
     private String getPathInContext(HttpServletRequest request) {
@@ -35,7 +35,7 @@ public class ModelAndView {
         return Collections.unmodifiableMap(viewIngredients);
     }
 
-    public String getTemplate() {
-        return viewTemplate;
+    public String getViewName() {
+        return viewName;
     }
 }

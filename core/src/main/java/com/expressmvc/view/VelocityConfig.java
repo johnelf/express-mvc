@@ -1,5 +1,6 @@
 package com.expressmvc.view;
 
+import com.expressioc.annotation.Singleton;
 import com.expressmvc.AppInitializer;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.VelocityException;
@@ -7,6 +8,7 @@ import org.apache.velocity.exception.VelocityException;
 import javax.servlet.ServletConfig;
 import java.util.Properties;
 
+@Singleton
 public class VelocityConfig implements AppInitializer {
     public static final String PRE_FIX = "/WEB-INF/views";
     public static final String TEMPLATE_POSTFIX = ".vm";

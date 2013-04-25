@@ -15,7 +15,7 @@ public class VelocityViewRender implements ViewRender {
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) {
         Context context = new VelocityContext(mv.getViewIngredients());
         try {
-            getTemplate(mv.getTemplate()).merge(context, response.getWriter());
+            getTemplate(mv.getViewName()).merge(context, response.getWriter());
         } catch (Exception e) {
             throw new RenderException(e);
         }

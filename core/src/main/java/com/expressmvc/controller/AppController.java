@@ -15,10 +15,9 @@ import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class AppController extends BaseController {
+public class AppController {
     private DataBinder dataBinder;
 
-    @Override
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
 
         Method handlerMethod = getHandlerMethodInController(req);
