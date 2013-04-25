@@ -9,6 +9,9 @@ public class ModelAndView {
     private String viewName;
     private Map<String, Object> viewIngredients = newHashMap();
 
+    public ModelAndView() {
+    }
+
     public ModelAndView(String viewName) {
         this.viewName = viewName;
     }

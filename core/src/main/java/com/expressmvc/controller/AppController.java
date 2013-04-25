@@ -22,7 +22,7 @@ public class AppController {
 
         Method handlerMethod = getHandlerMethodInController(req);
         if (handlerMethod == null) {
-            return new ModelAndView(req);
+            return new ModelAndView();
         }
 
         return handleRequestBy(handlerMethod, req, resp);
@@ -93,7 +93,7 @@ public class AppController {
     }
 
     private ModelAndView createModelAndView(Envelope envelope, HttpServletRequest request, String handlerMethodName) {
-        ModelAndView mv = new ModelAndView(request, handlerMethodName.toLowerCase());
+        ModelAndView mv = new ModelAndView(handlerMethodName.toLowerCase());
         return putViewIngredientsIntoMV(envelope, mv);
     }
 

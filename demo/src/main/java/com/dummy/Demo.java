@@ -14,7 +14,7 @@ public class Demo {
     public static final String HOST = "localhost";
 
     public static void main(String[] args) throws IOException {
-        Thread.currentThread().setDaemon(true);
+        //Thread.currentThread().setDaemon(true);
         startServer();
     }
 
@@ -29,6 +29,8 @@ public class Demo {
 
         ctx.deploy(httpServer);
         httpServer.start();
+
+        System.in.read();
     }
 
 }
