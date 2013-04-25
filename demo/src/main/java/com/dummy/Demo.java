@@ -9,13 +9,16 @@ import org.glassfish.grizzly.servlet.WebappContext;
 
 import java.io.IOException;
 
-public class Demo {
+public class Demo implements Runnable{
     public static final int PORT = 3000;
     public static final String HOST = "localhost";
 
-    public static void main(String[] args) throws IOException {
-        //Thread.currentThread().setDaemon(true);
-        startServer();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Thread demo = new Thread(new Demo());
+        demo.setDaemon(true);
+        demo.start();
+
+        Thread.currentThread().join();
     }
 
     public static void startServer() throws IOException {
@@ -29,8 +32,14 @@ public class Demo {
 
         ctx.deploy(httpServer);
         httpServer.start();
-
-        System.in.read();
     }
 
+    @Override
+    public void run() {
+        try {
+            startServer();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
 }
