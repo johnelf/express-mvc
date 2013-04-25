@@ -27,8 +27,8 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
         Container frameworkContainer = new ExpressContainer("com.expressmvc");
         containerOfThisWebApp = createNewObjectContainer(config, frameworkContainer);
 
-        List<NeedInitByServletConfig> objectsNeedInit = containerWhereThisObjectIn.getImplementationObjectListOf(NeedInitByServletConfig.class);
-        for (NeedInitByServletConfig o: objectsNeedInit) {
+        List<AppInitializer> objectsNeedInit = containerWhereThisObjectIn.getImplementationObjectListOf(AppInitializer.class);
+        for (AppInitializer o: objectsNeedInit) {
             o.init(config);
         }
     }
