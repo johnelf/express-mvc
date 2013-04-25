@@ -1,7 +1,6 @@
-package com.expressmvc.controller.impl;
+package com.expressmvc.model;
 
 import com.expressioc.utility.ClassUtility;
-import com.expressmvc.controller.DataBinder;
 import com.expressmvc.exception.DataBindException;
 
 import javax.servlet.http.HttpServletRequest;
