@@ -5,7 +5,6 @@ import com.expressmvc.AppInitializer;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.controller.AppController;
 import com.expressmvc.controller.MappingResolver;
-import com.google.common.base.Strings;
 import com.google.common.reflect.ClassPath;
 
 import javax.servlet.ServletConfig;
@@ -21,13 +20,8 @@ public class AnnotationBasedMappingResolver implements MappingResolver, AppIniti
 
     @Override
     public void init(ServletConfig config) {
-        String webAppRootPackage = config.getInitParameter(WEB_APP_ROOT_PACKAGE);
-        if (Strings.isNullOrEmpty(webAppRootPackage)) {
-            throw new IllegalStateException("need webapp_root_package parameter in ServletConfig to init webApp.");
-        }
-
         contextPath = config.getServletContext().getContextPath();
-        resolveControllerMapping(webAppRootPackage);
+        resolveControllerMapping(config.getInitParameter(WEB_APP_ROOT_PACKAGE));
     }
 
     @Override
@@ -40,12 +34,13 @@ public class AnnotationBasedMappingResolver implements MappingResolver, AppIniti
             ClassPath classpath = ClassPath.from(ClassLoader.getSystemClassLoader());
             for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(packageNameToScan)) {
                 Class<?> clazz = classInfo.load();
-                boolean isControllerWithAnnotation = AppController.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(Path.class);
 
-                if (isControllerWithAnnotation) {
+                boolean needMapping = AppController.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(Path.class);
+                if (needMapping) {
                     String urlToHandle = clazz.getAnnotation(Path.class).value();
                     addUrlHandlerMapping((Class<? extends AppController>) clazz, urlToHandle);
                 }
+
             }
         } catch (IOException e) {
         }
