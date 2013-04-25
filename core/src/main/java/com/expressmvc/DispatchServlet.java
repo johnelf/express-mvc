@@ -51,13 +51,13 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
         }
 
         ModelAndView mv = controller.doService(req, resp);
-        View view = resolveView(mv, req);
+        View view = resolveView(req, mv);
         view.render(mv.getViewIngredients(), req, resp);
     }
 
-    private View resolveView(ModelAndView mv, HttpServletRequest req) throws ServletException {
+    private View resolveView(HttpServletRequest req, ModelAndView mv) throws ServletException {
         for (ViewResolver viewResolver : viewResolvers) {
-            View view = viewResolver.findView(mv.getViewName());
+            View view = viewResolver.findView(req, mv.getViewName());
             if (view != null) {
                 return view;
             }
