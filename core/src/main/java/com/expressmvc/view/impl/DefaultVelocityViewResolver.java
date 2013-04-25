@@ -15,7 +15,7 @@ import java.util.Properties;
 @Singleton
 public class DefaultVelocityViewResolver implements ViewResolver, AppInitializer {
     public static final String PRE_FIX = "/WEB-INF/views";
-    public static final String DEFAULT_VIEW = "/show.vm";
+    public static final String DEFAULT_VIEW = "show.vm";
     public static final String TEMPLATE_POSTFIX = ".vm";
 
     @Override
