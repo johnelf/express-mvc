@@ -4,6 +4,8 @@ project (":demo") {
     }
 
     task(runDemo, dependsOn: 'classes', type: JavaExec) {
+        File directory = new File("${projectDir}/../");
+        systemProperties['user.dir'] = directory.toString()
         main = 'com.dummy.Demo'
         classpath = sourceSets.main.runtimeClasspath
     }
