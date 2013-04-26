@@ -35,12 +35,18 @@ public class AppController {
         Object[] params = assembleParametersFor(handlerMethod, req, resp);
 
         try {
-            envelope = (Envelope) handlerMethod.invoke(this, params);
+            if (handlerMethod.getReturnType().equals(Void.TYPE)) {
+                handlerMethod.invoke(this, params);
+                envelope = new Envelope(req, params);
+            } else {
+                envelope = (Envelope) handlerMethod.invoke(this, params);
+                envelope = envelope == null ? new Envelope(req, params) : envelope.add(req);
+            }
         } catch (IllegalAccessException e) {
         } catch (InvocationTargetException e) {
         }
 
-        return createModelAndView(envelope, req, handlerMethod.getName());
+        return createModelAndView(envelope, handlerMethod.getName());
     }
 
     private Method getHandlerMethodInController(HttpServletRequest req) {
@@ -93,7 +99,7 @@ public class AppController {
         return params.toArray(new Object[params.size()]);
     }
 
-    private ModelAndView createModelAndView(Envelope envelope, HttpServletRequest request, String handlerMethodName) {
+    private ModelAndView createModelAndView(Envelope envelope, String handlerMethodName) {
         ModelAndView mv = new ModelAndView(handlerMethodName.toLowerCase());
         return putViewIngredientsIntoMV(envelope, mv);
     }

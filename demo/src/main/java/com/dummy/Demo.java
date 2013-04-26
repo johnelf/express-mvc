@@ -39,7 +39,7 @@ public class Demo implements Runnable{
         try {
             startServer();
         } catch (IOException e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
     }
 }
