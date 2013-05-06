@@ -3,6 +3,7 @@ package com.dummy.controllers;
 import com.dummy.services.MailService;
 import com.dummy.models.Article;
 import com.expressmvc.annotation.Path;
+import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
 import com.expressmvc.controller.AppController;
 import com.expressmvc.controller.Envelope;
@@ -15,7 +16,14 @@ public class ArticleController extends AppController {
         this.mailService = mailService;
     }
 
+    @GET
+    @Path("/show")
+    public Envelope show() {
+        return Envelope.initWith();
+    }
+
     @POST
+    @Path("/create")
     public Envelope create(Article article) {
 
         //fake business logic
@@ -23,6 +31,13 @@ public class ArticleController extends AppController {
 
         //using injected service
         mailService.sendMail("a@b.com", article.toString());
+
+        return Envelope.initWith(article);
+    }
+
+    @POST
+    @Path("/edit")
+    public Envelope edit(Article article) {
 
         return Envelope.initWith(article);
     }

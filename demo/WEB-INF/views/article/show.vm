@@ -1,6 +1,6 @@
 <html>
   <body>
-    <form name="createArticle" method="POST" action="/demo/article">
+    <form name="createArticle" method="POST" action="/demo/article/create">
       Author name:   <input type="text" name="article.author.name" /><br>
       Author age:   <input type="text" name="article.author.age" /><br>
       Author email:  <input type="text" name="article.author.email" /><br>

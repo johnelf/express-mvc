@@ -3,10 +3,13 @@ package com.expressmvc.controller;
 import com.expressmvc.controller.impl.AnnotationBasedMappingResolver;
 import com.expressmvc.fixture.TestPathAnnotationController;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -31,7 +34,15 @@ public class AnnotationBasedMappingResolverTest {
     public void should_able_to_resolve_the_controller_mapping_based_on_annotation() {
         resolver.init(servletConfig);
 
-        Class controllerForArticleClass = resolver.getControllerFor("/demo/article");
+        Class<? extends AppController> controllerForArticleClass = resolver.getControllerFor("/demo/article/create");
+        assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
+    }
+
+    @Test
+    public void should_able_to_handle_different_post_with_different_path() {
+        resolver.init(servletConfig);
+
+        Class<? extends AppController> controllerForArticleClass = resolver.getControllerFor("/demo/article/edit");
         assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
     }
 }

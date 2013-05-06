@@ -2,6 +2,7 @@ package com.expressmvc.controller;
 
 import com.expressioc.utility.ClassUtility;
 import com.expressmvc.ModelAndView;
+import com.expressmvc.annotation.Path;
 import com.expressmvc.annotation.ViewIngredient;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
@@ -52,21 +53,27 @@ public class AppController {
     private Method getHandlerMethodInController(HttpServletRequest req) {
         Method methodForRequest = null;
         String requestMethod = req.getMethod();
+        String path = req.getContextPath() + req.getServletPath();
 
         if ("GET".equals(requestMethod)) {
-            methodForRequest = findMethodWith(GET.class);
+            methodForRequest = findMethodWith(GET.class, path);
         } else if ("POST".equals(requestMethod)) {
-            methodForRequest = findMethodWith(POST.class);
+            methodForRequest = findMethodWith(POST.class, path);
         }
 
         return methodForRequest;
     }
 
-    private Method findMethodWith(Class<? extends Annotation> annotationClass) {
+    private Method findMethodWith(Class<? extends Annotation> annotationClass, String path) {
         Method[] methods = this.getClass().getMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(annotationClass)) {
-                return method;
+                if (method.isAnnotationPresent(Path.class)) {
+                    String url = method.getAnnotation(Path.class).value();
+                    if (path.contains(url)) {
+                        return method;
+                    }
+                }
             }
         }
 
