@@ -22,6 +22,12 @@ public class ArticleController extends AppController {
         return Envelope.initWith();
     }
 
+    @GET
+    @Path("/display")
+    public Envelope display() {
+        return Envelope.initWith();
+    }
+
     @POST
     @Path("/create")
     public Envelope create(Article article) {

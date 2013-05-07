@@ -1,0 +1,9 @@
+<html>
+  <body>
+    <p>This is a display page for HTTP GET method test.</p>
+
+    <div>
+        <a href="/demo/article">Back To Main Page</a>
+    </div>
+  </body>
+</html>
