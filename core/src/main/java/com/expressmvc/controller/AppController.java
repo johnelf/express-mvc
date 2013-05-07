@@ -69,12 +69,11 @@ public class AppController {
         Path clazzRoute = this.getClass().getAnnotation(Path.class);
         if (clazzRoute != null) {
             for (Method method : methods) {
-                if (method.isAnnotationPresent(annotationClass)) {
-                    if (method.isAnnotationPresent(Path.class)) {
-                        if (path.equals(clazzRoute.value() + method.getAnnotation(Path.class).value())
-                                || (path.equals("/") && method.getAnnotation(Path.class).value().equals("/"))) {
-                            return method;
-                        }
+                if (method.isAnnotationPresent(Path.class)) {
+                    String methodRoute = method.getAnnotation(Path.class).value();
+                    if (path.equals(clazzRoute.value() + methodRoute)
+                            || (path.equals("/") && methodRoute.equals("/"))) {
+                        return method;
                     }
                 }
             }
