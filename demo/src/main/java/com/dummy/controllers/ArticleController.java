@@ -17,7 +17,7 @@ public class ArticleController extends AppController {
     }
 
     @GET
-    @Path("/show")
+    @Path("/")
     public Envelope show() {
         return Envelope.initWith();
     }

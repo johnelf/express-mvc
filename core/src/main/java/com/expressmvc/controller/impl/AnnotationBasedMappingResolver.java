@@ -31,12 +31,18 @@ public class AnnotationBasedMappingResolver implements MappingResolver, AppIniti
     @Override
     public Class<? extends AppController> getControllerFor(String url) {
         for (String baseUrl : urlHandlerMapping.keySet()) {
-            if (url.contains(baseUrl)) {
-                String urlToPath = url.substring(baseUrl.length());
-                for (Map<String, Class<? extends AppController>> routerMap : urlHandlerMapping.values()) {
-                    Class<? extends AppController> controller = routerMap.get(urlToPath);
-                    if (controller != null) return controller;
-                }
+            if (url.startsWith(baseUrl)) {
+                return findAppController(baseUrl);
+            }
+        }
+        return null;
+    }
+
+    private Class<? extends AppController> findAppController(String baseUrl) {
+        Map<String, Class<? extends AppController>> pathMapInController = urlHandlerMapping.get(baseUrl);
+        for (Class<? extends AppController> controller : pathMapInController.values()) {
+            if (controller != null) {
+                return controller;
             }
         }
         return null;

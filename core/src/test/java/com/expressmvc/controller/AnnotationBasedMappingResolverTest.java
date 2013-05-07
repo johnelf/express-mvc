@@ -45,4 +45,12 @@ public class AnnotationBasedMappingResolverTest {
         Class<? extends AppController> controllerForArticleClass = resolver.getControllerFor("/demo/article/edit");
         assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
     }
+
+    @Test
+    public void should_able_to_handle_default_path() {
+        resolver.init(servletConfig);
+
+        Class<? extends AppController> controllerForArticleClass = resolver.getControllerFor("/demo/article");
+        assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
+    }
 }

@@ -53,7 +53,7 @@ public class AppController {
     private Method getHandlerMethodInController(HttpServletRequest req) {
         Method methodForRequest = null;
         String requestMethod = req.getMethod();
-        String path = req.getContextPath() + req.getServletPath();
+        String path = req.getServletPath();
 
         if ("GET".equals(requestMethod)) {
             methodForRequest = findMethodWith(GET.class, path);
@@ -66,12 +66,15 @@ public class AppController {
 
     private Method findMethodWith(Class<? extends Annotation> annotationClass, String path) {
         Method[] methods = this.getClass().getMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(annotationClass)) {
-                if (method.isAnnotationPresent(Path.class)) {
-                    String url = method.getAnnotation(Path.class).value();
-                    if (path.contains(url)) {
-                        return method;
+        Path clazzRoute = this.getClass().getAnnotation(Path.class);
+        if (clazzRoute != null) {
+            for (Method method : methods) {
+                if (method.isAnnotationPresent(annotationClass)) {
+                    if (method.isAnnotationPresent(Path.class)) {
+                        if (path.equals(clazzRoute.value() + method.getAnnotation(Path.class).value())
+                                || (path.equals("/") && method.getAnnotation(Path.class).value().equals("/"))) {
+                            return method;
+                        }
                     }
                 }
             }
