@@ -25,6 +25,7 @@ public class ArticleController extends AppController {
     @GET
     @Path("/display")
     public Envelope display() {
+        //TODO add PathVariable annotation support, do it in DataBinder \\{([^/]+?)\\}
         return Envelope.initWith();
     }
 
