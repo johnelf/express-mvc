@@ -2,12 +2,14 @@ project (":demo") {
     dependencies {
         compile(project(':core'))
         compile fileTree(dir: 'libs', include: 'core.jar')
+        compile fileTree(dir: 'libs', include: 'instrument.jar')
     }
 
     task(runDemo, dependsOn: 'classes', type: JavaExec) {
         File directory = new File("${projectDir}/../");
         systemProperties['user.dir'] = directory.toString()
         main = 'com.dummy.Demo'
+        jvmArgs '-javaagent:./libs/instrument.jar'
         classpath = sourceSets.main.runtimeClasspath
     }
 
