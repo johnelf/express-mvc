@@ -1,6 +1,7 @@
 project (":demo") {
     dependencies {
         compile(project(':core'))
+        compile fileTree(dir: 'libs', include: 'core.jar')
     }
 
     task(runDemo, dependsOn: 'classes', type: JavaExec) {

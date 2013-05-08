@@ -1,20 +1,14 @@
 package com.dummy.models;
 
 import com.expressmvc.annotation.ViewIngredient;
+import com.thoughtworks.Model;
 
 @ViewIngredient("_article")
-public class Article {
+public class Article extends Model {
     private String title;
-    private Author author;
+    private int authorId;
     private String url;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    private Author author;
 
     public Author getAuthor() {
         return author;
@@ -22,6 +16,21 @@ public class Article {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setUrl(String url) {

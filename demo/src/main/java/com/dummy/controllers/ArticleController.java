@@ -8,6 +8,8 @@ import com.expressmvc.annotation.http.POST;
 import com.expressmvc.controller.AppController;
 import com.expressmvc.controller.Envelope;
 
+import java.sql.SQLException;
+
 @Path("/article")
 public class ArticleController extends AppController {
     private final MailService mailService;
@@ -31,10 +33,12 @@ public class ArticleController extends AppController {
 
     @POST
     @Path("/create")
-    public Envelope create(Article article) {
+    public Envelope create(Article article) throws SQLException {
 
         //fake business logic
-        article.setUrl("http://www.example.com/2013/" + article.getAuthor().getName() + "/" + article.getTitle());
+        article.setUrl("http://www.example.com/2013/" + article.getAuthorId() + "/" + article.getTitle());
+        article.save();
+        article.getAuthor().save();
 
         //using injected service
         mailService.sendMail("a@b.com", article.toString());

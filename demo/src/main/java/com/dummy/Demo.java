@@ -3,11 +3,19 @@ package com.dummy;
 import com.expressioc.Container;
 import com.expressioc.ExpressContainer;
 import com.expressmvc.DispatchServlet;
+import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
+import com.google.common.io.Resources;
+import com.thoughtworks.DB;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Demo implements Runnable{
     public static final int PORT = 3000;
@@ -21,7 +29,7 @@ public class Demo implements Runnable{
         Thread.currentThread().join();
     }
 
-    public static void startServer() throws IOException {
+    public static void startServer() throws IOException, SQLException {
         HttpServer httpServer = HttpServer.createSimpleServer("/", HOST, PORT);
         WebappContext ctx = new WebappContext("demo", "/demo");
 
@@ -29,6 +37,20 @@ public class Demo implements Runnable{
         final ServletRegistration reg = ctx.addServlet("", container.getComponent(DispatchServlet.class));
         reg.setInitParameter("webapp_root_package", "com.dummy");
         reg.addMapping("/");
+
+        Connection connection = DB.connection();
+        URL url = Resources.getResource("dbschema.sql");
+        String sqls = Resources.toString(url, Charsets.UTF_8);
+
+        for (String sql : sqls.split(";")) {
+            if (Strings.isNullOrEmpty(sql.trim())) {
+                continue;
+            }
+
+            Statement statement = DB.connection().createStatement();
+            statement.execute(sql);
+            statement.close();
+        }
 
         ctx.deploy(httpServer);
         httpServer.start();
@@ -38,7 +60,7 @@ public class Demo implements Runnable{
     public void run() {
         try {
             startServer();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

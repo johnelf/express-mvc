@@ -1,9 +1,20 @@
 package com.dummy.models;
 
-public class Author {
+import com.thoughtworks.Model;
+
+public class Author extends Model{
     private String name;
     private int age;
     private String email;
+    private Article[] articles;
+
+    public Article[] getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Article[] articles) {
+        this.articles = articles;
+    }
 
     public String getName() {
         return name;
