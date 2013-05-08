@@ -1,17 +1,22 @@
 package com.expressmvc.model;
 
+import com.expressioc.exception.CycleDependencyException;
 import com.expressioc.utility.ClassUtility;
 import com.expressmvc.exception.DataBindException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ParameterDataBinder implements DataBinder {
+    private Set<String> cycleMap = new HashSet<String>();
 
     @Override
     public void bind(HttpServletRequest request, Object parameter) throws DataBindException {
         try {
+            cycleMap.clear();
             doBind(request, parameter, getClazzName(parameter));
         } catch (Exception e) {
             throw new DataBindException(e);
@@ -19,6 +24,7 @@ public class ParameterDataBinder implements DataBinder {
     }
 
     private void doBind(HttpServletRequest request, Object parameter, String prefix) throws Exception {
+        cycleMap.add(parameter.getClass().getName());
         for (Field field : parameter.getClass().getDeclaredFields()) {
             field.setAccessible(true);
             if (ClassUtility.isBasicType(field.getType())) {
@@ -28,6 +34,12 @@ public class ParameterDataBinder implements DataBinder {
                 }
                 field.set(parameter, convert(parameter, requestValue, field.getType()));
             } else {
+                if (field.getType().isArray()) {
+                    continue;
+                }
+                if (cycleMap.contains(field.getName())) {
+                    throw new CycleDependencyException(parameter.getClass());
+                }
                 Object nestedParameter = field.getType().newInstance();
                 field.set(parameter, nestedParameter);
                 doBind(request, nestedParameter, prefix + "." + getClazzName(nestedParameter));
