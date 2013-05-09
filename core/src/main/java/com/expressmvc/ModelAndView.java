@@ -21,7 +21,7 @@ public class ModelAndView {
     }
 
     public final Map<String, Object> getViewIngredients() {
-        return Collections.unmodifiableMap(viewIngredients);
+        return viewIngredients;
     }
 
     public String getViewName() {

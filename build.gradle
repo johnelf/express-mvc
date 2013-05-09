@@ -13,6 +13,7 @@ allprojects {
         compile group: 'org.glassfish.grizzly', name: 'grizzly-http-all', version: '2.2.21'
         compile group: 'com.jayway.restassured', name: 'rest-assured', version: '1.8.0'
         compile group: 'mysql', name:'mysql-connector-java', version:'5.1.24'
+        compile group: 'org.javassist', name:'javassist', version:'3.17.1-GA'
         testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.0'
     }
 }

@@ -1,9 +1,10 @@
 package com.expressmvc.controller;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import com.expressmvc.annotation.ViewIngredient;
 
+import java.util.*;
+
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class Envelope {
@@ -20,7 +21,20 @@ public class Envelope {
     public Envelope add(Object... contents) {
         if (contents != null) {
             for (Object contentObject : contents) {
-                contentsMap.put(contentObject.getClass().getName(), contentObject);
+                if (contentObject instanceof List) {
+                    if (((List) contentObject).size() > 0) {
+                        contentsMap.put(((ArrayList) contentObject).get(0).getClass().getAnnotation(ViewIngredient.class).value(), contentObject);
+                    } else {
+                        contentsMap.put(((List) contentObject).get(0).getClass().getAnnotation(ViewIngredient.class).value(), newArrayList());
+                    }
+                } else {
+                    ViewIngredient viewIngredient = contentObject.getClass().getAnnotation(ViewIngredient.class);
+                    if (viewIngredient != null) {
+                        contentsMap.put(viewIngredient.value(), contentObject);
+                    } else {
+                        contentsMap.put(contentObject.getClass().getName(), contentObject);
+                    }
+                }
             }
         }
 
@@ -32,6 +46,6 @@ public class Envelope {
     }
 
     public final Map<String, Object> getContents() {
-        return Collections.unmodifiableMap(contentsMap);
+        return contentsMap;
     }
 }

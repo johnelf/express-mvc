@@ -7,8 +7,10 @@ import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
 import com.expressmvc.controller.AppController;
 import com.expressmvc.controller.Envelope;
+import com.thoughtworks.Model;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Path("/article")
 public class ArticleController extends AppController {
@@ -26,9 +28,11 @@ public class ArticleController extends AppController {
 
     @GET
     @Path("/display")
-    public Envelope display() {
+    public Envelope display() throws SQLException {
         //TODO add PathVariable annotation support, do it in DataBinder \\{([^/]+?)\\}
-        return Envelope.initWith();
+        List<Article> articles = Article.find_all();
+
+        return Envelope.initWith(articles);
     }
 
     @POST

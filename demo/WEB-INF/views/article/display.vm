@@ -1,6 +1,9 @@
 <html>
   <body>
-    <p>This is a display page for HTTP GET method test.</p>
+    <p>This is a display page for all the articles.</p>
+    #foreach($article in $_article)
+        $article.title<br/>
+    #end
 
     <div>
         <a href="/demo/article">Back To Main Page</a>

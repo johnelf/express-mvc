@@ -14,6 +14,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -114,13 +115,8 @@ public class AppController {
     }
 
     private ModelAndView putViewIngredientsIntoMV(Envelope envelope, ModelAndView mv) {
-        for (Object o : envelope.getContents().values()) {
-
-            boolean isViewIngredient = o.getClass().isAnnotationPresent(ViewIngredient.class);
-            if (isViewIngredient) {
-                String ingredientName = o.getClass().getAnnotation(ViewIngredient.class).value();
-                mv.addViewIngredient(ingredientName, o);
-            }
+        for (Map.Entry<String, Object> o : envelope.getContents().entrySet()) {
+            mv.addViewIngredient(o.getKey(), o.getValue());
         }
 
         return mv;
