@@ -1,26 +1,26 @@
 package com.dummy;
 
-import com.expressioc.Container;
 import com.expressioc.ExpressContainer;
 import com.expressmvc.DispatchServlet;
+import com.expressmvc.controller.MappingResolver;
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.io.Resources;
 import com.thoughtworks.DB;
-import com.thoughtworks.ModelInstrument;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Demo implements Runnable{
     public static final int PORT = 3000;
     public static final String HOST = "localhost";
+    private static final String MVC_FRAMEWORK = "com.expressmvc";
+    private static final String DEMO_APP_PACKAGE = "com.dummy";
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Thread demo = new Thread(new Demo());
@@ -30,16 +30,33 @@ public class Demo implements Runnable{
         Thread.currentThread().join();
     }
 
-    public static void startServer() throws IOException, SQLException {
-        HttpServer httpServer = HttpServer.createSimpleServer("/", HOST, PORT);
-        WebappContext ctx = new WebappContext("demo", "/demo");
+    @Override
+    public void run() {
+        try {
+            setupDatabase();
+            startServer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        Container container = new ExpressContainer("com.expressmvc");
-        final ServletRegistration reg = ctx.addServlet("", container.getComponent(DispatchServlet.class));
-        reg.setInitParameter("webapp_root_package", "com.dummy");
+    public static void startServer() throws IOException, SQLException {
+        createHttpServer().start();
+    }
+
+    private static HttpServer createHttpServer() {
+        WebappContext ctx = new WebappContext("demo", "/demo");
+        HttpServer httpServer = HttpServer.createSimpleServer("/", HOST, PORT);
+
+        final ServletRegistration reg = ctx.addServlet("", new ExpressContainer(MVC_FRAMEWORK).getComponent(DispatchServlet.class));
+        reg.setInitParameter(MappingResolver.WEB_APP_ROOT_PACKAGE, DEMO_APP_PACKAGE);
         reg.addMapping("/");
 
-        Connection connection = DB.connection();
+        ctx.deploy(httpServer);
+        return httpServer;
+    }
+
+    private static void setupDatabase() throws IOException, SQLException {
         URL url = Resources.getResource("dbschema.sql");
         String sqls = Resources.toString(url, Charsets.UTF_8);
 
@@ -51,18 +68,6 @@ public class Demo implements Runnable{
             Statement statement = DB.connection().createStatement();
             statement.execute(sql);
             statement.close();
-        }
-
-        ctx.deploy(httpServer);
-        httpServer.start();
-    }
-
-    @Override
-    public void run() {
-        try {
-            startServer();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

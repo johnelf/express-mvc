@@ -1,7 +1,7 @@
 project (":demo") {
     dependencies {
         compile(project(':core'))
-        compile fileTree(dir: 'libs', include: 'core.jar')
+        compile fileTree(dir: 'libs', include: 'express-orm.jar')
         compile fileTree(dir: 'libs', include: 'instrument.jar')
     }
 

@@ -1,9 +1,9 @@
 package com.dummy.models;
 
-import com.expressmvc.annotation.ViewIngredient;
+import com.expressmvc.annotation.ViewElement;
 import com.thoughtworks.Model;
 
-@ViewIngredient("_article")
+@ViewElement("_article")
 public class Article extends Model {
     private String title;
     private int authorId;

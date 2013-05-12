@@ -1,6 +1,6 @@
 package com.expressmvc.controller;
 
-import com.expressmvc.annotation.ViewIngredient;
+import com.expressmvc.annotation.ViewElement;
 
 import java.util.*;
 
@@ -19,18 +19,19 @@ public class Envelope {
     }
 
     public Envelope add(Object... contents) {
+        //TODO: refactor
         if (contents != null) {
             for (Object contentObject : contents) {
                 if (contentObject instanceof List) {
                     if (((List) contentObject).size() > 0) {
-                        contentsMap.put(((ArrayList) contentObject).get(0).getClass().getAnnotation(ViewIngredient.class).value(), contentObject);
+                        contentsMap.put(((ArrayList) contentObject).get(0).getClass().getAnnotation(ViewElement.class).value(), contentObject);
                     } else {
-                        contentsMap.put(((List) contentObject).get(0).getClass().getAnnotation(ViewIngredient.class).value(), newArrayList());
+                        contentsMap.put(((List) contentObject).get(0).getClass().getAnnotation(ViewElement.class).value(), newArrayList());
                     }
                 } else {
-                    ViewIngredient viewIngredient = contentObject.getClass().getAnnotation(ViewIngredient.class);
-                    if (viewIngredient != null) {
-                        contentsMap.put(viewIngredient.value(), contentObject);
+                    ViewElement viewElement = contentObject.getClass().getAnnotation(ViewElement.class);
+                    if (viewElement != null) {
+                        contentsMap.put(viewElement.value(), contentObject);
                     } else {
                         contentsMap.put(contentObject.getClass().getName(), contentObject);
                     }
