@@ -2,8 +2,8 @@ package com.dummy.models;
 
 import com.expressmvc.annotation.ViewElement;
 import com.thoughtworks.Model;
+import com.thoughtworks.annotation.Transactional;
 
-@ViewElement("_article")
 public class Article extends Model {
     private String title;
     private int authorId;
@@ -39,5 +39,11 @@ public class Article extends Model {
 
     public String getUrl() {
         return url;
+    }
+
+    @Override
+    @Transactional
+    public <T extends Model> T save() {
+        return super.save();
     }
 }

@@ -21,7 +21,7 @@ public class IntegrationTest {
         .expect()
                .statusCode(HttpServletResponse.SC_OK)
                .body(shouldContainsNameAndTitle())
-        .when().post("/demo/article");
+        .when().post("/demo/article/create");
     }
 
     private Matcher<String> shouldContainsNameAndTitle() {

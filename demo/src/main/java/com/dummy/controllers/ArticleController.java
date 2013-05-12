@@ -43,7 +43,9 @@ public class ArticleController extends AppController {
         //fake business logic
         article.setUrl("http://www.example.com/2013/" + article.getAuthorId() + "/" + article.getTitle());
         article.save();
-        article.getAuthor().save();
+        if (article.getAuthor() != null && article.getAuthor().getEmail() != null) {
+            article.getAuthor().save();
+        }
 
         //using injected service
         mailService.sendMail("a@b.com", article.toString());
