@@ -1,6 +1,7 @@
 package com.expressmvc.controller;
 
 import com.expressmvc.model.ModelNameResolver;
+import com.thoughtworks.query.QueryList;
 
 import java.util.*;
 
@@ -35,13 +36,16 @@ public class ModelAndViewContainer {
             objectClass = object.getClass().getComponentType();
             pluralize = true;
         } else if (object instanceof Collection) {
+            pluralize = true;
             Collection collection = (Collection)object;
             if (collection.isEmpty()) {
-                throw new IllegalArgumentException("can not get a variable name from a empty Collection.");
+                String modelClassName = ((QueryList) collection).getModelClassName();
+                String shortName = ModelNameResolver.getShortNameByClass(modelClassName);
+                return addAttribute(ModelNameResolver.getAttributeName(shortName, pluralize), object);
+            } else {
+                Object valueToCheck = ModelNameResolver.peekHead(collection);
+                objectClass = ModelNameResolver.getClassForValue(valueToCheck);
             }
-            Object valueToCheck = ModelNameResolver.peekHead(collection);
-            objectClass = ModelNameResolver.getClassForValue(valueToCheck);
-            pluralize = true;
         } else {
             objectClass = object.getClass();
         }

@@ -68,6 +68,12 @@ public class ModelNameResolver {
         return shortName.substring(lastDotIndex + 1).replace('$', '.');
     }
 
+    public static String getShortNameByClass(String clazzFullName) {
+        checkNotNull(clazzFullName);
+        int lastDotIndex = clazzFullName.lastIndexOf('.');
+        return clazzFullName.substring(lastDotIndex + 1).replace('$', '.').toLowerCase();
+    }
+
     public static String getAttributeName(String className, boolean pluralize) {
         checkNotNull(className);
 

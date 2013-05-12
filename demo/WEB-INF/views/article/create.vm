@@ -1,4 +1,4 @@
-Article Title: $_article.title
-Author Name: $_article.author.name
-Author Age: $_article.author.age
-Author Email: $_article.author.email
+Article Title: $article.title
+Author Name: $article.author.name
+Author Age: $article.author.age
+Author Email: $article.author.email
