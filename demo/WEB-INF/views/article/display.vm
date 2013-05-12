@@ -1,10 +1,11 @@
 <html>
   <body>
     <p>This is a display page for all the articles.</p>
-    #foreach($article in $_article)
-        $article.title<br/>
+    <ul>
+    #foreach($article in $articles)
+        <li>$article.title</li>
     #end
-
+    </ul>
     <div>
         <a href="/demo/article">Back To Main Page</a>
     </div>

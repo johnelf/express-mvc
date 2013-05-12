@@ -31,23 +31,23 @@ public class AppController {
     }
 
     private ModelAndView handleRequestBy(Method handlerMethod, HttpServletRequest req, HttpServletResponse resp) {
-        Envelope envelope = null;
+        ModelAndViewContainer modelAndViewContainer = null;
 
         Object[] params = assembleParametersFor(handlerMethod, req, resp);
 
         try {
             if (handlerMethod.getReturnType().equals(Void.TYPE)) {
                 handlerMethod.invoke(this, params);
-                envelope = new Envelope(req, params);
+                modelAndViewContainer = new ModelAndViewContainer(params);
             } else {
-                envelope = (Envelope) handlerMethod.invoke(this, params);
-                envelope = envelope == null ? new Envelope(req, params) : envelope.add(req);
+                modelAndViewContainer = (ModelAndViewContainer) handlerMethod.invoke(this, params);
+                modelAndViewContainer = modelAndViewContainer == null ? new ModelAndViewContainer(params) : modelAndViewContainer.add(req);
             }
         } catch (IllegalAccessException e) {
         } catch (InvocationTargetException e) {
         }
 
-        return createModelAndView(envelope, handlerMethod.getName());
+        return createModelAndView(modelAndViewContainer, handlerMethod.getName());
     }
 
     private Method getHandlerMethodInController(HttpServletRequest req) {
@@ -108,14 +108,16 @@ public class AppController {
         return params.toArray(new Object[params.size()]);
     }
 
-    private ModelAndView createModelAndView(Envelope envelope, String handlerMethodName) {
+    private ModelAndView createModelAndView(ModelAndViewContainer modelAndViewContainer, String handlerMethodName) {
         ModelAndView mv = new ModelAndView(handlerMethodName.toLowerCase());
-        return putViewIngredientsIntoMV(envelope, mv);
+        return putViewIngredientsIntoMV(modelAndViewContainer, mv);
     }
 
-    private ModelAndView putViewIngredientsIntoMV(Envelope envelope, ModelAndView mv) {
-        for (Map.Entry<String, Object> o : envelope.getContents().entrySet()) {
-            mv.addViewIngredient(o.getKey(), o.getValue());
+    private ModelAndView putViewIngredientsIntoMV(ModelAndViewContainer modelAndViewContainer, ModelAndView mv) {
+        if (modelAndViewContainer.getContents() != null) {
+            for (Map.Entry<String, Object> o : modelAndViewContainer.getContents().entrySet()) {
+                mv.addViewIngredient(o.getKey(), o.getValue());
+            }
         }
 
         return mv;

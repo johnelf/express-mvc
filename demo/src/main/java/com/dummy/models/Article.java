@@ -1,7 +1,6 @@
 package com.dummy.models;
 
 import com.expressmvc.annotation.ViewElement;
-import com.thoughtworks.Model;
 
 @ViewElement("_article")
 public class Article extends Model {
