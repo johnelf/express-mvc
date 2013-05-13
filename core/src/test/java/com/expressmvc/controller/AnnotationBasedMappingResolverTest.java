@@ -1,15 +1,12 @@
 package com.expressmvc.controller;
 
-import com.expressmvc.controller.impl.AnnotationBasedMappingResolver;
+import com.expressmvc.controller.impl.DefaultMappingResolver;
 import com.expressmvc.fixture.TestPathAnnotationController;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-
-import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -18,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AnnotationBasedMappingResolverTest {
-    private AnnotationBasedMappingResolver resolver;
+    private DefaultMappingResolver resolver;
     private ServletConfig servletConfig = mock(ServletConfig.class);
     private ServletContext servletContext = mock(ServletContext.class);
 
@@ -26,7 +23,7 @@ public class AnnotationBasedMappingResolverTest {
     public void setUp() {
         when(servletConfig.getServletContext()).thenReturn(servletContext);
         when(servletContext.getContextPath()).thenReturn("/demo");
-        resolver = new AnnotationBasedMappingResolver();
+        resolver = new DefaultMappingResolver();
         when(servletConfig.getInitParameter(anyString())).thenReturn("com.expressmvc");
     }
 

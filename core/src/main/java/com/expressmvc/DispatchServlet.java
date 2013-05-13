@@ -27,7 +27,7 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        Container frameworkContainer = new ExpressContainer("com.expressmvc");         //move down
+        Container frameworkContainer = new ExpressContainer("com.expressmvc");
         containerOfThisWebApp = createNewObjectContainer(config, frameworkContainer);
 
         initFrameworkComponents(config);
@@ -52,7 +52,7 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
 
         ModelAndView mv = controller.doService(req, resp);
         View view = resolveView(req, mv);
-        view.render(mv.getViewIngredients(), req, resp);
+        view.render(mv.getModels(), req, resp);
     }
 
     private View resolveView(HttpServletRequest req, ModelAndView mv) throws ServletException {

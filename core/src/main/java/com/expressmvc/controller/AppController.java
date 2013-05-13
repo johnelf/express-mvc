@@ -3,13 +3,11 @@ package com.expressmvc.controller;
 import com.expressioc.utility.ClassUtility;
 import com.expressmvc.ModelAndView;
 import com.expressmvc.annotation.Path;
-import com.expressmvc.annotation.http.GET;
-import com.expressmvc.annotation.http.POST;
 import com.expressmvc.model.DataBinder;
+import com.expressmvc.model.ModelContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -31,23 +29,23 @@ public class AppController {
     }
 
     private ModelAndView handleRequestBy(Method handlerMethod, HttpServletRequest req, HttpServletResponse resp) {
-        ModelAndViewContainer modelAndViewContainer = null;
+        ModelContainer modelContainer = null;
 
         Object[] params = assembleParametersFor(handlerMethod, req, resp);
 
         try {
             if (handlerMethod.getReturnType().equals(Void.TYPE)) {
                 handlerMethod.invoke(this, params);
-                modelAndViewContainer = new ModelAndViewContainer(params);
+                modelContainer = new ModelContainer(params);
             } else {
-                modelAndViewContainer = (ModelAndViewContainer) handlerMethod.invoke(this, params);
-                modelAndViewContainer = modelAndViewContainer == null ? new ModelAndViewContainer(params) : modelAndViewContainer.add(req);
+                modelContainer = (ModelContainer) handlerMethod.invoke(this, params);
+                modelContainer = modelContainer == null ? new ModelContainer(params) : modelContainer.add(req);
             }
         } catch (IllegalAccessException e) {
         } catch (InvocationTargetException e) {
         }
 
-        return createModelAndView(modelAndViewContainer, handlerMethod.getName());
+        return createModelAndView(modelContainer, handlerMethod.getName());
     }
 
     private Method getHandlerMethodInController(HttpServletRequest req) {
@@ -56,15 +54,15 @@ public class AppController {
         String path = req.getServletPath();
 
         if ("GET".equals(requestMethod)) {
-            methodForRequest = findMethodWith(GET.class, path);
+            methodForRequest = findMethodWith(path);
         } else if ("POST".equals(requestMethod)) {
-            methodForRequest = findMethodWith(POST.class, path);
+            methodForRequest = findMethodWith(path);
         }
 
         return methodForRequest;
     }
 
-    private Method findMethodWith(Class<? extends Annotation> annotationClass, String path) {
+    private Method findMethodWith(String path) {
         Method[] methods = this.getClass().getMethods();
         Path clazzRoute = this.getClass().getAnnotation(Path.class);
         if (clazzRoute != null) {
@@ -108,15 +106,15 @@ public class AppController {
         return params.toArray(new Object[params.size()]);
     }
 
-    private ModelAndView createModelAndView(ModelAndViewContainer modelAndViewContainer, String handlerMethodName) {
+    private ModelAndView createModelAndView(ModelContainer modelContainer, String handlerMethodName) {
         ModelAndView mv = new ModelAndView(handlerMethodName.toLowerCase());
-        return putViewIngredientsIntoMV(modelAndViewContainer, mv);
+        return putViewIngredientsIntoMV(modelContainer, mv);
     }
 
-    private ModelAndView putViewIngredientsIntoMV(ModelAndViewContainer modelAndViewContainer, ModelAndView mv) {
-        if (modelAndViewContainer.getContents() != null) {
-            for (Map.Entry<String, Object> o : modelAndViewContainer.getContents().entrySet()) {
-                mv.addViewIngredient(o.getKey(), o.getValue());
+    private ModelAndView putViewIngredientsIntoMV(ModelContainer modelContainer, ModelAndView mv) {
+        if (modelContainer.getContents() != null) {
+            for (Map.Entry<String, Object> o : modelContainer.getContents().entrySet()) {
+                mv.addModel(o.getKey(), o.getValue());
             }
         }
 

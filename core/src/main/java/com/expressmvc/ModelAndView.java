@@ -1,13 +1,12 @@
 package com.expressmvc;
 
-import java.util.Collections;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 
 public class ModelAndView {
     private String viewName;
-    private Map<String, Object> viewIngredients = newHashMap();
+    private Map<String, Object> models = newHashMap();
 
     public ModelAndView() {
     }
@@ -16,12 +15,12 @@ public class ModelAndView {
         this.viewName = viewName;
     }
 
-    public void addViewIngredient(String name, Object ingredient) {
-        viewIngredients.put(name, ingredient);
+    public void addModel(String name, Object model) {
+        models.put(name, model);
     }
 
-    public final Map<String, Object> getViewIngredients() {
-        return viewIngredients;
+    public final Map<String, Object> getModels() {
+        return models;
     }
 
     public String getViewName() {

@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 
 public class Demo implements Runnable{
     public static final int PORT = 3000;
@@ -36,9 +35,7 @@ public class Demo implements Runnable{
         try {
             setupDatabase();
             startServer();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
     public static void startServer() throws IOException, SQLException {

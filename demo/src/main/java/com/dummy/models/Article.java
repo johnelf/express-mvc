@@ -1,6 +1,5 @@
 package com.dummy.models;
 
-import com.expressmvc.annotation.ViewElement;
 import com.thoughtworks.Model;
 import com.thoughtworks.annotation.Transactional;
 

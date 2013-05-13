@@ -2,18 +2,18 @@ package com.expressmvc.fixture;
 
 import com.expressmvc.annotation.Path;
 import com.expressmvc.controller.AppController;
-import com.expressmvc.controller.ModelAndViewContainer;
+import com.expressmvc.model.ModelContainer;
 
 @Path("/article")
 public class TestPathAnnotationController extends AppController {
 
     @Path("/create")
-    public ModelAndViewContainer create() {
+    public ModelContainer create() {
         return null;
     }
 
     @Path("/edit")
-    public ModelAndViewContainer edit() {
+    public ModelContainer edit() {
         return null;
     }
 }

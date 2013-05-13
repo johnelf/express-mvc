@@ -24,7 +24,6 @@ public class DefaultVelocityViewResolver implements ViewResolver, AppInitializer
     }
 
     private String findViewTemplatePath(HttpServletRequest req, String viewName) {
-        //TODO render error page when viewName is NULL
         String viewTemplateName = Strings.isNullOrEmpty(viewName) ? DEFAULT_VIEW : viewName + TEMPLATE_POSTFIX;
         return "/" + req.getServletPath().split("/")[1] + "/" +viewTemplateName;
     }
