@@ -47,9 +47,4 @@ public class ArticleController {
         return ModelContainer.initWith(article);
     }
 
-    @POST
-    @Path("/edit")
-    public ModelContainer edit(Article article) {
-        return ModelContainer.initWith(article);
-    }
 }
