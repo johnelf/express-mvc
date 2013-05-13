@@ -17,6 +17,11 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class AppController {
     private DataBinder dataBinder;
+    private Object delegate;
+
+    public AppController(Object delegate) {
+        this.delegate = delegate;
+    }
 
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -35,10 +40,10 @@ public class AppController {
 
         try {
             if (handlerMethod.getReturnType().equals(Void.TYPE)) {
-                handlerMethod.invoke(this, params);
+                handlerMethod.invoke(delegate, params);
                 modelContainer = new ModelContainer(params);
             } else {
-                modelContainer = (ModelContainer) handlerMethod.invoke(this, params);
+                modelContainer = (ModelContainer) handlerMethod.invoke(delegate, params);
                 modelContainer = modelContainer == null ? new ModelContainer(params) : modelContainer.add(req);
             }
         } catch (IllegalAccessException e) {
@@ -63,8 +68,8 @@ public class AppController {
     }
 
     private Method findMethodWith(String path) {
-        Method[] methods = this.getClass().getMethods();
-        Path clazzRoute = this.getClass().getAnnotation(Path.class);
+        Method[] methods = delegate.getClass().getMethods();
+        Path clazzRoute = delegate.getClass().getAnnotation(Path.class);
         if (clazzRoute != null) {
             for (Method method : methods) {
                 if (method.isAnnotationPresent(Path.class)) {

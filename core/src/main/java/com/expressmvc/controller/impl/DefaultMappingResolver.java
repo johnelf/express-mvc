@@ -17,7 +17,7 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @Singleton
 public class DefaultMappingResolver implements MappingResolver, AppInitializer {
-    private Map<String, Map<String, Class<AppController>>> urlHandlerMapping = newHashMap();
+    private Map<String, Map<String, Class>> urlHandlerMapping = newHashMap();
     private String contextPath;
 
     @Override
@@ -27,7 +27,7 @@ public class DefaultMappingResolver implements MappingResolver, AppInitializer {
     }
 
     @Override
-    public Class<? extends AppController> getControllerFor(String url) {
+    public Class getControllerFor(String url) {
         for (String baseUrl : urlHandlerMapping.keySet()) {
             if (url.startsWith(baseUrl)) {
                 return findAppController(baseUrl);
@@ -37,7 +37,7 @@ public class DefaultMappingResolver implements MappingResolver, AppInitializer {
     }
 
     private Class<? extends AppController> findAppController(String baseUrl) {
-        Map<String, Class<AppController>> pathMapInController = urlHandlerMapping.get(baseUrl);
+        Map<String, Class> pathMapInController = urlHandlerMapping.get(baseUrl);
         for (Class<? extends AppController> controller : pathMapInController.values()) {
             if (controller != null) {
                 return controller;
@@ -50,9 +50,8 @@ public class DefaultMappingResolver implements MappingResolver, AppInitializer {
         try {
             ClassPath classpath = ClassPath.from(ClassLoader.getSystemClassLoader());
             for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(packageNameToScan)) {
-                Class<AppController> clazz = (Class<AppController>) classInfo.load();
-
-                boolean needMapping = AppController.class.isAssignableFrom(clazz) && clazz.isAnnotationPresent(Path.class);
+                Class clazz = classInfo.load();
+                boolean needMapping = clazz.isAnnotationPresent(Path.class);
                 if (needMapping) {
                     addUrlHandlerMappingBasedOnMethods(clazz);
                 }
@@ -62,7 +61,7 @@ public class DefaultMappingResolver implements MappingResolver, AppInitializer {
         }
     }
 
-    private void addUrlHandlerMappingBasedOnMethods(Class<AppController> clazz) {
+    private void addUrlHandlerMappingBasedOnMethods(Class<?> clazz) {
         String baseUrl = clazz.getAnnotation(Path.class).value();
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Path.class)) {
@@ -71,12 +70,12 @@ public class DefaultMappingResolver implements MappingResolver, AppInitializer {
         }
     }
 
-    private void addUrlHandlerMapping(Class<AppController> clazz, String baseUrl, String methodUrl) {
-        Map<String, Class<AppController>> methodMapping = urlHandlerMapping.get(contextPath + baseUrl);
+    private void addUrlHandlerMapping(Class clazz, String baseUrl, String methodUrl) {
+        Map<String, Class> methodMapping = urlHandlerMapping.get(contextPath + baseUrl);
         if (methodMapping != null) {
             methodMapping.put(methodUrl, clazz);
         } else {
-            HashMap<String, Class<AppController>> urlToPath = newHashMap();
+            HashMap<String, Class> urlToPath = newHashMap();
             urlToPath.put(methodUrl, clazz);
             urlHandlerMapping.put(contextPath + baseUrl, urlToPath);
         }

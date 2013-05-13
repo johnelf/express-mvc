@@ -67,9 +67,11 @@ public class DispatchServlet extends HttpServlet implements ContainerAware {
     }
 
     private AppController getControllerFor(String requestURI) {
-        Class<? extends AppController> controllerClazz = mappingResolver.getControllerFor(requestURI);
+        Class controllerClazz = mappingResolver.getControllerFor(requestURI);
         if (controllerClazz != null) {
-            return containerOfThisWebApp.getComponent(controllerClazz);
+            Object controllerDelegate = containerOfThisWebApp.getComponent(controllerClazz);
+            containerOfThisWebApp.addComponent(Object.class, controllerDelegate);
+            return containerOfThisWebApp.getComponent(AppController.class);
         }
 
         return null;

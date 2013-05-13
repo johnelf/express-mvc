@@ -5,13 +5,12 @@ import com.dummy.services.MailService;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
-import com.expressmvc.controller.AppController;
 import com.expressmvc.model.ModelContainer;
 
 import java.util.List;
 
 @Path("/article")
-public class ArticleController extends AppController {
+public class ArticleController {
     private final MailService mailService;
 
     public ArticleController(MailService mailService) {

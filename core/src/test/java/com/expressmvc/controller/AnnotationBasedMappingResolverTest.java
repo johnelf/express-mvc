@@ -31,7 +31,7 @@ public class AnnotationBasedMappingResolverTest {
     public void should_able_to_resolve_the_controller_mapping_based_on_annotation() {
         resolver.init(servletConfig);
 
-        Class<? extends AppController> controllerForArticleClass = resolver.getControllerFor("/demo/article/create");
+        Class<?> controllerForArticleClass = resolver.getControllerFor("/demo/article/create");
         assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
     }
 
@@ -39,7 +39,7 @@ public class AnnotationBasedMappingResolverTest {
     public void should_able_to_handle_different_post_with_different_path() {
         resolver.init(servletConfig);
 
-        Class<? extends AppController> controllerForArticleClass = resolver.getControllerFor("/demo/article/edit");
+        Class<?> controllerForArticleClass = resolver.getControllerFor("/demo/article/edit");
         assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
     }
 
@@ -47,7 +47,7 @@ public class AnnotationBasedMappingResolverTest {
     public void should_able_to_handle_default_path() {
         resolver.init(servletConfig);
 
-        Class<? extends AppController> controllerForArticleClass = resolver.getControllerFor("/demo/article");
+        Class<?> controllerForArticleClass = resolver.getControllerFor("/demo/article");
         assertThat(controllerForArticleClass == TestPathAnnotationController.class, is(true));
     }
 }
