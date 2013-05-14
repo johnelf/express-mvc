@@ -28,20 +28,24 @@ public class ArticleController {
     @GET
     @Path("/display")
     public ModelContainer display() {
-        QueryList<Article> articles = Article.find_all().includes(Author.class);
-        return ModelContainer.initWith(articles);
+        List<Author> authors = Author.find_all().includes(Article.class);
+        return ModelContainer.initWith(authors);
     }
 
     @POST
     @Path("/create")
     public ModelContainer create(Article article) {
 
-        //fake business logic
+        String criteria = String.format("name = '%s'", article.getAuthor().getName());
+        Author isAuthorExist = Author.find_first(criteria);
+        if (isAuthorExist != null) {
+            article.setAuthorId(isAuthorExist.getId());
+        } else if (article.getAuthor() != null && article.getAuthor().getEmail() != null) {
+            Author author = article.getAuthor().save();
+            article.setAuthorId(author.getId());
+        }
         article.setUrl("http://www.example.com/2013/" + article.getAuthorId() + "/" + article.getTitle());
         article.save();
-        if (article.getAuthor() != null && article.getAuthor().getEmail() != null) {
-            article.getAuthor().save();
-        }
 
         //using injected service
         mailService.sendMail("a@b.com", article.toString());

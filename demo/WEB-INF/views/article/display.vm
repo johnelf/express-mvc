@@ -2,8 +2,14 @@
   <body>
     <p>This is a display page for all the articles.</p>
     <ul>
-    #foreach($article in $articles)
-        <li>$article.title</li>
+    #foreach($author in $authors)
+        <p>Author Name:</p>
+        <li>$author.name</li>
+        <ul>
+            #foreach($article in $author.articles)
+                <li>$article.title</li>
+            #end
+        </ul>
     #end
     </ul>
     <div>
