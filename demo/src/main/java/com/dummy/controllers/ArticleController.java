@@ -32,11 +32,7 @@ public class ArticleController {
     @POST
     @Path("/create")
     public Article create(Article article) {
-        Author author = Author.find_first("name='" + article.getAuthor().getName() + "'");
-        if (author == null) {
-            author = article.getAuthor().save();
-        }
-
+        Author author = Author.find_or_create("name", article.getAuthor().getName());
         article.setAuthorId(author.getId()).save();
 
         mailService.sendMail("a@b.com", article.toString());
