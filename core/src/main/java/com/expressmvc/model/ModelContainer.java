@@ -27,8 +27,7 @@ public class ModelContainer {
     public ModelContainer add(Object object) {
         checkNotNull(object);
         boolean needPluralize = false;
-
-        Class objectClass;
+        Class objectClass = object.getClass();
 
         if (object.getClass().isArray()) {
             objectClass = object.getClass().getComponentType();
@@ -36,20 +35,22 @@ public class ModelContainer {
         } else if (object instanceof Collection) {
             needPluralize = true;
             Collection collection = (Collection)object;
-            if (collection.isEmpty()) {
-                return this;
-            } else {
-                Object valueToCheck = peekHead(collection);
-                objectClass = valueToCheck.getClass();
+            if (!collection.isEmpty()) {
+                objectClass = collection.iterator().next().getClass();
             }
-        } else {
-            objectClass = object.getClass();
         }
 
-        String modelName = pluralize(getModelName(objectClass), needPluralize);
-
-        contentsMap.put(modelName, object);
+        contentsMap.put(getModelName(objectClass, needPluralize), object);
         return this;
+    }
+
+    private String getModelName(Class objectClass, boolean needPluralize) {
+        String modelName = underscore(getModelName(objectClass));
+        return needPluralize ? modelName + "s" : modelName;
+    }
+
+    private String underscore(String className) {
+        return className.replaceAll("[A-Z]", "_$0").substring(1).toLowerCase();
     }
 
     public String getModelName(Class<?> clazz) {
@@ -60,26 +61,8 @@ public class ModelContainer {
         }
     }
 
-    public String pluralize(String className, boolean pluralize) {
-        String attributeName = className.replaceAll("[A-Z]", "_$0").substring(1).toLowerCase();
-        return pluralize ? attributeName + "s" : attributeName;
-    }
-
     public final Map<String, Object> getContents() {
         return contentsMap;
-    }
-
-    private Object peekHead(Collection collection) {
-        if (collection.isEmpty()) {
-            throw new IllegalStateException("can not parse name from an empty Collection.");
-        }
-
-        Object object = collection.iterator().next();
-        if (object == null) {
-            throw new IllegalStateException("can not parse name from an empty Collection. Only null object found.");
-        }
-
-        return object;
     }
 
 }
