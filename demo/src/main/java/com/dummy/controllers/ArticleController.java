@@ -25,8 +25,7 @@ public class ArticleController {
     @GET
     @Path("/display")
     public List<Author> display() {
-        List<Author> authors = Author.find_all().includes(Article.class);
-        return authors;
+        return Author.find_all().includes(Article.class);
     }
 
     @POST
