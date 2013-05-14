@@ -46,8 +46,8 @@ public class AppController {
                 modelContainer = (ModelContainer) handlerMethod.invoke(delegate, params);
                 modelContainer = modelContainer == null ? new ModelContainer(params) : modelContainer.add(req);
             }
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return createModelAndView(modelContainer, handlerMethod.getName());

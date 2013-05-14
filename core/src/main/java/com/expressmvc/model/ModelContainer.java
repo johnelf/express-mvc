@@ -26,13 +26,13 @@ public class ModelContainer {
 
     public ModelContainer add(Object object) {
         checkNotNull(object);
-        boolean pluralize = false;
+        boolean needPluralize = false;
         Class objectClass;
         if (object.getClass().isArray()) {
             objectClass = object.getClass().getComponentType();
-            pluralize = true;
+            needPluralize = true;
         } else if (object instanceof Collection) {
-            pluralize = true;
+            needPluralize = true;
             Collection collection = (Collection)object;
             if (collection.isEmpty()) {
                 return this;
@@ -44,31 +44,25 @@ public class ModelContainer {
             objectClass = object.getClass();
         }
 
-        String name = getShortNameByClass(objectClass);
-        return addAttribute(getAttributeName(name, pluralize), object);
+        contentsMap.put(pluralize(getModelName(objectClass), needPluralize), object);
+        return this;
     }
 
-    public String getShortNameByClass(Class<?> clazz) {
-        String shortName = getShortName(clazz);
-        checkNotNull(shortName);
-        int lastDotIndex = shortName.lastIndexOf('.');
-        return shortName.substring(lastDotIndex + 1).replace('$', '.');
+    public String getModelName(Class<?> clazz) {
+        if (clazz.isArray()) {
+            return clazz.getComponentType().getSimpleName();
+        } else {
+            return clazz.getSimpleName();
+        }
     }
 
-    public String getAttributeName(String className, boolean pluralize) {
-        checkNotNull(className);
-
-        String attributeName = className.replaceAll("[A-Z]", "$0").substring(0).toLowerCase();
+    public String pluralize(String className, boolean pluralize) {
+        String attributeName = className.replaceAll("[A-Z]", "_$0").substring(0).toLowerCase();
         return pluralize ? attributeName + "s" : attributeName;
     }
 
     public final Map<String, Object> getContents() {
         return contentsMap;
-    }
-
-    private ModelContainer addAttribute(String attributeName, Object object) {
-        contentsMap.put(attributeName, object);
-        return this;
     }
 
     private Object peekHead(Collection collection) {
@@ -84,18 +78,4 @@ public class ModelContainer {
         return object;
     }
 
-    private String getShortName(Class<?> clazz) {
-        checkNotNull(clazz);
-
-        if (clazz.isArray()) {
-            return getShortNameForArray(clazz);
-        } else {
-            return clazz.getName();
-        }
-    }
-
-    private String getShortNameForArray(Class<?> clazz) {
-        clazz = clazz.getComponentType();
-        return clazz.getName();
-    }
 }
