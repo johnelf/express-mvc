@@ -32,7 +32,7 @@ public class ArticleController {
     @POST
     @Path("/create")
     public Article create(Article article) {
-        Author author = Author.find_first("name='%s" + article.getAuthor().getName() + "'");
+        Author author = Author.find_first("name='" + article.getAuthor().getName() + "'");
         if (author == null) {
             author = article.getAuthor().save();
         }
