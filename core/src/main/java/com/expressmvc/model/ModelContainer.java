@@ -1,7 +1,5 @@
 package com.expressmvc.model;
 
-import com.expressioc.utility.ClassUtility;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -40,7 +38,7 @@ public class ModelContainer {
                 return this;
             } else {
                 Object valueToCheck = peekHead(collection);
-                objectClass = ClassUtility.getDomainClass(valueToCheck);
+                objectClass = valueToCheck.getClass();
             }
         } else {
             objectClass = object.getClass();
