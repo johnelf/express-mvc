@@ -22,8 +22,7 @@ public class ArticleController {
 
     @GET
     @Path("/")
-    public ModelContainer show() {
-        return ModelContainer.initWith();
+    public void show() {
     }
 
     @GET
