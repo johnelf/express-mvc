@@ -27,7 +27,9 @@ public class ModelContainer {
     public ModelContainer add(Object object) {
         checkNotNull(object);
         boolean needPluralize = false;
+
         Class objectClass;
+
         if (object.getClass().isArray()) {
             objectClass = object.getClass().getComponentType();
             needPluralize = true;
@@ -44,7 +46,9 @@ public class ModelContainer {
             objectClass = object.getClass();
         }
 
-        contentsMap.put(pluralize(getModelName(objectClass), needPluralize), object);
+        String modelName = pluralize(getModelName(objectClass), needPluralize);
+
+        contentsMap.put(modelName, object);
         return this;
     }
 
@@ -57,7 +61,7 @@ public class ModelContainer {
     }
 
     public String pluralize(String className, boolean pluralize) {
-        String attributeName = className.replaceAll("[A-Z]", "_$0").substring(0).toLowerCase();
+        String attributeName = className.replaceAll("[A-Z]", "_$0").substring(1).toLowerCase();
         return pluralize ? attributeName + "s" : attributeName;
     }
 
