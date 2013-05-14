@@ -1,11 +1,14 @@
 package com.dummy.controllers;
 
 import com.dummy.models.Article;
+import com.dummy.models.Author;
 import com.dummy.services.MailService;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
 import com.expressmvc.model.ModelContainer;
+import com.thoughtworks.Model;
+import com.thoughtworks.query.QueryList;
 
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class ArticleController {
     @GET
     @Path("/display")
     public ModelContainer display() {
-        List<Article> articles = Article.find_all();
+        QueryList<Article> articles = Article.find_all().includes(Author.class);
         return ModelContainer.initWith(articles);
     }
 
