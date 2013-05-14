@@ -32,18 +32,13 @@ public class ArticleController {
     @POST
     @Path("/create")
     public Article create(Article article) {
-        String criteria = String.format("name = '%s'", article.getAuthor().getName());
-        Author isAuthorExist = Author.find_first(criteria);
-        if (isAuthorExist != null) {
-            article.setAuthorId(isAuthorExist.getId());
-        } else if (article.getAuthor() != null && article.getAuthor().getEmail() != null) {
-            Author author = article.getAuthor().save();
-            article.setAuthorId(author.getId());
+        Author author = Author.find_first("name='%s" + article.getAuthor().getName() + "'");
+        if (author == null) {
+            author = article.getAuthor().save();
         }
-        article.setUrl("http://www.example.com/2013/" + article.getAuthorId() + "/" + article.getTitle());
-        article.save();
 
-        //using injected service
+        article.setAuthorId(author.getId()).save();
+
         mailService.sendMail("a@b.com", article.toString());
 
         return article;
