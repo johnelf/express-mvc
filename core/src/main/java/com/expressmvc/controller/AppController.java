@@ -8,7 +8,6 @@ import com.expressmvc.model.ModelContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
@@ -54,20 +53,7 @@ public class AppController {
     }
 
     private Method getHandlerMethodInController(HttpServletRequest req) {
-        Method methodForRequest = null;
-        String requestMethod = req.getMethod();
         String path = req.getServletPath();
-
-        if ("GET".equals(requestMethod)) {
-            methodForRequest = findMethodWith(path);
-        } else if ("POST".equals(requestMethod)) {
-            methodForRequest = findMethodWith(path);
-        }
-
-        return methodForRequest;
-    }
-
-    private Method findMethodWith(String path) {
         Method[] methods = delegate.getClass().getMethods();
         Path clazzRoute = delegate.getClass().getAnnotation(Path.class);
         if (clazzRoute != null) {
@@ -113,16 +99,15 @@ public class AppController {
 
     private ModelAndView createModelAndView(ModelContainer modelContainer, String handlerMethodName) {
         ModelAndView mv = new ModelAndView(handlerMethodName.toLowerCase());
-        return putViewIngredientsIntoMV(modelContainer, mv);
+        return putViewElementIntoMV(modelContainer, mv);
     }
 
-    private ModelAndView putViewIngredientsIntoMV(ModelContainer modelContainer, ModelAndView mv) {
+    private ModelAndView putViewElementIntoMV(ModelContainer modelContainer, ModelAndView mv) {
         if (modelContainer.getContents() != null) {
             for (Map.Entry<String, Object> o : modelContainer.getContents().entrySet()) {
                 mv.addModel(o.getKey(), o.getValue());
             }
         }
-
         return mv;
     }
 
