@@ -1,14 +1,27 @@
 <html>
   <body>
-    <form name="createArticle" method="POST" action="/demo/article/create">
-      Author name:   <input type="text" name="article.author.name" /><br>
-      Author age:   <input type="text" name="article.author.age" /><br>
-      Author email:  <input type="text" name="article.author.email" /><br>
-      Article title: <input type="text" name="article.title" /><br>
-      <input type="submit" value="public this article" /><br>
+  <div>
+    <form name="createArticle" style="text-align:center" method="POST" action="/demo/article/create">
+      <TABLE BORDER="1" style="margin-left:auto;margin-right:auto;">
+        <TR>
+          <TD>Author name</TD>
+          <TD><INPUT TYPE="TEXT" NAME="article.author.name" /></TD>
+        </TR>
+        <TR>
+          <TD>Author age</TD>
+          <TD><INPUT TYPE="TEXT" NAME="article.author.age" /></TD>
+        </TR>
+        <TR>
+          <TD>Author email</TD>
+          <TD><INPUT TYPE="TEXT" NAME="article.author.email" /></TD>
+        </TR>
+        <TR>
+          <TD>Article title</TD>
+          <TD><INPUT TYPE="TEXT" NAME="article.title" /></TD>
+        </TR>
+      </TABLE>
+      <P><INPUT TYPE="SUBMIT" VALUE="Public This Article"></P>
     </form>
-
-    $_article.url
-
+  </div>
   </body>
 </html>

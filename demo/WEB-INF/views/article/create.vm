@@ -1,4 +1,26 @@
-Article Title: $article.title
-Author Name: $article.author.name
-Author Age: $article.author.age
-Author Email: $article.author.email
+<html>
+  <body>
+    <h3>The Article Details:</h3>
+    <table border="1">
+        <tr>
+            <td>Article Title</td>
+            <td>$article.title</td>
+        </tr>
+        <tr>
+            <td>Author Name</td>
+            <td>$article.author.name</td>
+        </tr>
+        <tr>
+            <td>Author Age</td>
+            <td>$article.author.age</td>
+        </tr>
+        <tr>
+            <td>Author Email</td>
+            <td>$article.author.email</td>
+        </tr>
+    </table>
+    <div>
+        <a href="/demo/article">Back To Main Page</a>
+    </div>
+  </body>
+</html>
