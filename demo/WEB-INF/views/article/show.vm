@@ -1,8 +1,8 @@
 <html>
   <body>
   <div>
-    <form name="createArticle" style="text-align:center" method="POST" action="/demo/article/create">
-      <TABLE BORDER="1" style="margin-left:auto;margin-right:auto;">
+    <form name="createArticle" method="POST" action="/demo/article/create">
+      <TABLE BORDER="1">
         <TR>
           <TD>Author name</TD>
           <TD><INPUT TYPE="TEXT" NAME="article.author.name" /></TD>
@@ -22,6 +22,9 @@
       </TABLE>
       <P><INPUT TYPE="SUBMIT" VALUE="Public This Article"></P>
     </form>
+  </div>
+  <div>
+      <a href="/demo/article/display">Show All Articles</a>
   </div>
   </body>
 </html>

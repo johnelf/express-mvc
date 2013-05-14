@@ -3,8 +3,7 @@
     <p>This is a display page for all the articles.</p>
     <ul>
     #foreach($author in $authors)
-        <p>Author Name:</p>
-        <li>$author.name</li>
+        <li>Author : $author.name</li>
         <ul>
             #foreach($article in $author.articles)
                 <li>$article.title</li>

@@ -13,10 +13,6 @@ public class Article extends Model {
         return author;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
     public int getAuthorId() {
         return authorId;
     }
@@ -26,10 +22,6 @@ public class Article extends Model {
 
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setUrl(String url) {
