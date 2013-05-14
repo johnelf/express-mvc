@@ -6,6 +6,7 @@ import com.dummy.services.MailService;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
+import com.thoughtworks.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class ArticleController {
 
     @POST
     @Path("/create")
+    @Transactional
     public Article create(Article article) {
         Author author = Author.find_or_create("name", article.getAuthor().getName());
         article.setAuthorId(author.getId()).save();
