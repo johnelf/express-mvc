@@ -1,7 +1,6 @@
 package com.expressmvc.fixture;
 
 import com.expressmvc.annotation.Path;
-import com.expressmvc.model.ModelContainer;
 
 @Path("/article")
 public class TestPathAnnotationController{
@@ -10,12 +9,10 @@ public class TestPathAnnotationController{
     }
 
     @Path("/create")
-    public ModelContainer create() {
-        return null;
+    public void create() {
     }
 
     @Path("/edit")
-    public ModelContainer edit() {
-        return null;
+    public void edit() {
     }
 }

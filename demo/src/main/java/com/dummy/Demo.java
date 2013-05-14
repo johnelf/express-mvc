@@ -33,13 +33,14 @@ public class Demo implements Runnable{
     @Override
     public void run() {
         try {
-            setupDatabase();
+            //setupDatabase();
             startServer();
         } catch (Exception e) {}
     }
 
     public static void startServer() throws IOException, SQLException {
         createHttpServer().start();
+
     }
 
     private static HttpServer createHttpServer() {

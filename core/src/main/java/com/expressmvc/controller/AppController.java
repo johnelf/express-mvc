@@ -4,13 +4,11 @@ import com.expressioc.utility.ClassUtility;
 import com.expressmvc.ModelAndView;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.model.DataBinder;
-import com.expressmvc.model.ModelContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -23,7 +21,6 @@ public class AppController {
     }
 
     public ModelAndView doService(HttpServletRequest req, HttpServletResponse resp) {
-
         Method handlerMethod = getHandlerMethodInController(req);
         if (handlerMethod == null) {
             return new ModelAndView();
@@ -33,42 +30,45 @@ public class AppController {
     }
 
     private ModelAndView handleRequestBy(Method handlerMethod, HttpServletRequest req, HttpServletResponse resp) {
-        ModelContainer modelContainer = null;
-
+        ModelAndView mv = new ModelAndView();
         Object[] params = assembleParametersFor(handlerMethod, req, resp);
 
         try {
             if (handlerMethod.getReturnType().equals(Void.TYPE)) {
                 handlerMethod.invoke(delegate, params);
-                modelContainer = new ModelContainer(params);
+                mv = new ModelAndView(params);
             } else {
-                modelContainer = (ModelContainer) handlerMethod.invoke(delegate, params);
-                modelContainer = modelContainer == null ? new ModelContainer(params) : modelContainer.add(req);
+                Object handleResult = handlerMethod.invoke(delegate, params);
+                if (!(handleResult instanceof ModelAndView)) {
+                    mv.add(handleResult);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return createModelAndView(modelContainer, handlerMethod.getName());
+        return mv.setViewName(handlerMethod.getName());
     }
 
     private Method getHandlerMethodInController(HttpServletRequest req) {
-        String path = req.getServletPath();
         Method[] methods = delegate.getClass().getMethods();
-        Path clazzRoute = delegate.getClass().getAnnotation(Path.class);
-        if (clazzRoute != null) {
-            for (Method method : methods) {
-                if (method.isAnnotationPresent(Path.class)) {
-                    String methodRoute = method.getAnnotation(Path.class).value();
-                    if (path.equals(clazzRoute.value() + methodRoute)
-                            || (path.equals("/") && methodRoute.equals("/"))) {
-                        return method;
-                    }
-                }
+        String clazzRoute = delegate.getClass().getAnnotation(Path.class).value();
+
+        for (Method method : methods) {
+            if (methodCanHandleRequest(req, clazzRoute, method)) {
+                return method;
             }
         }
 
         return null;
+    }
+
+    private boolean methodCanHandleRequest(HttpServletRequest req, String clazzRoute, Method method) {
+        if (!method.isAnnotationPresent(Path.class)) {
+            return false;
+        }
+
+        return req.getServletPath().equals(clazzRoute + method.getAnnotation(Path.class).value());
     }
 
     private Object[] assembleParametersFor(Method handlerMethod, HttpServletRequest request, HttpServletResponse response) {
@@ -95,20 +95,6 @@ public class AppController {
         }
 
         return params.toArray(new Object[params.size()]);
-    }
-
-    private ModelAndView createModelAndView(ModelContainer modelContainer, String handlerMethodName) {
-        ModelAndView mv = new ModelAndView(handlerMethodName.toLowerCase());
-        return putViewElementIntoMV(modelContainer, mv);
-    }
-
-    private ModelAndView putViewElementIntoMV(ModelContainer modelContainer, ModelAndView mv) {
-        if (modelContainer.getContents() != null) {
-            for (Map.Entry<String, Object> o : modelContainer.getContents().entrySet()) {
-                mv.addModel(o.getKey(), o.getValue());
-            }
-        }
-        return mv;
     }
 
     public void setDataBinder(DataBinder dataBinder) {

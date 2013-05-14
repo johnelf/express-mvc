@@ -6,9 +6,6 @@ import com.dummy.services.MailService;
 import com.expressmvc.annotation.Path;
 import com.expressmvc.annotation.http.GET;
 import com.expressmvc.annotation.http.POST;
-import com.expressmvc.model.ModelContainer;
-import com.thoughtworks.Model;
-import com.thoughtworks.query.QueryList;
 
 import java.util.List;
 
@@ -27,15 +24,14 @@ public class ArticleController {
 
     @GET
     @Path("/display")
-    public ModelContainer display() {
+    public List<Author> display() {
         List<Author> authors = Author.find_all().includes(Article.class);
-        return ModelContainer.initWith(authors);
+        return authors;
     }
 
     @POST
     @Path("/create")
-    public ModelContainer create(Article article) {
-
+    public Article create(Article article) {
         String criteria = String.format("name = '%s'", article.getAuthor().getName());
         Author isAuthorExist = Author.find_first(criteria);
         if (isAuthorExist != null) {
@@ -50,7 +46,7 @@ public class ArticleController {
         //using injected service
         mailService.sendMail("a@b.com", article.toString());
 
-        return ModelContainer.initWith(article);
+        return article;
     }
 
 }
