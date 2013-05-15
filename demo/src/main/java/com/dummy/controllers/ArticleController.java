@@ -31,7 +31,6 @@ public class ArticleController {
 
     @POST
     @Path("/create")
-    @Transactional
     public Article create(Article article) {
         Author author = Author.find_or_create("name", article.getAuthor().getName());
         article.setAuthorId(author.getId()).save();
